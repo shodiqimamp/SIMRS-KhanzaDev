@@ -217,24 +217,86 @@ public class frmUtama extends javax.swing.JFrame {
                     medication();
                 }
                 
-                if((detik.equals("01")&&menit.equals("01"))){
-                    encounter();
-                    observationTTV();
-                    vaksin();
-                    prosedur();
-                    condition();
-                    clinicalimpression();
-                    dietgizi();
+                if((detik.equals("01")&&menit.equals("16"))){
+//                    encounter();
+//                    observationTTV();
+//                    vaksin();
+//                    prosedur();
+//                    condition();
+//                    clinicalimpression();
+//                    dietgizi();
                     medicationrequest();
                     medicationdispense();
-                    servicerequestradiologi();
-                    specimenradiologi();
+//                    servicerequestradiologi();
+//                    specimenradiologi();
+                }
+                
+                 if((detik.equals("01")&&menit.equals("57")&&jam.equals("22"))){
+                      saveDiet();
                 }
             }
         };
         // Timer
         new Timer(1000, taskPerformer).start();
     }
+    
+     private void saveDiet(){
+        try{
+            ps=koneksi.prepareStatement(
+                    "SELECT pemeriksaan_ranap.no_rawat, pemeriksaan_ranap.pemeriksaan, pemeriksaan_ranap.tinggi, pemeriksaan_ranap.berat, pemeriksaan_ranap.suhu_tubuh, pemeriksaan_ranap.respirasi, pemeriksaan_ranap.tensi, pemeriksaan_ranap.nadi ,CONCAT(pemeriksaan_ranap.tgl_perawatan, ' ', pemeriksaan_ranap.jam_rawat) AS tanggal, " +
+                    "pemeriksaan_ranap.keluhan, pemeriksaan_ranap.penilaian, pemeriksaan_ranap.rtl, pemeriksaan_ranap.evaluasi, pemeriksaan_ranap.instruksi, pegawai.nik, pegawai.nama, reg_periksa.umurdaftar " +
+                    "FROM pemeriksaan_ranap " +
+                    "INNER JOIN pegawai ON pemeriksaan_ranap.nip = pegawai.nik " +
+                    "INNER JOIN reg_periksa ON pemeriksaan_ranap.no_rawat = reg_periksa.no_rawat " +
+                    "INNER JOIN pasien ON pasien.no_rkm_medis = reg_periksa.no_rkm_medis " +
+                    "WHERE pemeriksaan_ranap.tgl_perawatan BETWEEN ? AND ? " +
+                    "AND pegawai.jbtn = 'Ahli Gizi' "
+            );
+            try{
+                ps.setString(1,Tanggal1.getText()+" ");
+                ps.setString(2,Tanggal2.getText()+" ");
+                rs=ps.executeQuery();
+                while(rs.next()){
+                    try{
+                        
+                        String tinggi = rs.getString("tinggi");
+                        String berat = rs.getString("berat");
+                        String tensi = rs.getString("tensi");
+                        String nadi = rs.getString("nadi");
+                        String suhu = rs.getString("suhu_tubuh");
+                        String respirasi = rs.getString("respirasi");
+                        
+                        tinggi = tinggi.isEmpty() ? "-" : tinggi;
+                        berat = berat.isEmpty() ? "-" : berat;
+                        tensi = tensi.isEmpty() ? "-" : tensi;
+                        nadi = nadi.isEmpty() ? "-" : nadi;
+                        suhu = suhu.isEmpty() ? "-" : suhu;
+                        respirasi = respirasi.isEmpty() ? "-" : respirasi;
+                  
+                        String assesmen="PX DENGAN USIA "+rs.getString("umurdaftar") +" Tahun, "+ "BB: "+berat+" KG, "+"TB: "+
+                            tinggi+" CM, "+"T: "+tensi+", N: "+nadi+", ST: "+suhu+", R: "+respirasi+", "+rs.getString("pemeriksaan").toUpperCase()+", "+rs.getString("keluhan").toUpperCase();
+                        
+                        Sequel.menyimpantf("catatan_adime_gizi","?,?,?,?,?,?,?,?,?","Data",9,new String[]{
+                            rs.getString("no_rawat"), rs.getString("tanggal"), assesmen.toUpperCase(),
+                            rs.getString("penilaian").toUpperCase(), rs.getString("rtl").toUpperCase(),
+                            rs.getString("evaluasi").toUpperCase(), evaluasi, rs.getString("instruksi").toUpperCase(), rs.getString("nik"), 
+                        });
+                    } catch(Exception e){
+                        System.out.println("Notifikasi : "+e);
+                    }
+                }
+            }
+            catch(Exception e){
+                System.out.println("Notifikasi : "+e);
+            }
+            
+            System.out.println("Notifikasi : Data Adime Gizi Tanggal: " + Tanggal1.getText() +" s/d "+ Tanggal2.getText() +" Berhasil Disimpan !");
+            TeksArea.append("Notifikasi : Data Adime Gizi Tanggal: " + Tanggal1.getText() +" s/d "+ Tanggal2.getText() +" Berhasil Disimpan ! \n");
+        }
+        catch(Exception e){
+            System.out.println("Notifikasi : "+e);
+        }
+     }
     
     private void encounter() {
         //kirim encounter
