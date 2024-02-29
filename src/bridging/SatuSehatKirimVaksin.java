@@ -44,8 +44,8 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
     private sekuel Sequel=new sekuel();
     private validasi Valid=new validasi();
     private Connection koneksi=koneksiDB.condb();
-    private PreparedStatement ps;
-    private ResultSet rs;   
+    private PreparedStatement ps, ps2;
+    private ResultSet rs, rs2;   
     private int i=0;
     private String link="",json="",idpasien="",iddokter="";
     private ApiSatuSehat api=new ApiSatuSehat();
@@ -72,7 +72,7 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
                 "ID Encounter","Vaksin Code","Vaksin System","Kode Vaksin","Vaksin Display","Route Code","Route System",
                 "Route Display","Dose Code","Dose System","Dose Unit","No.Batch","Tanggal & Jam Beri","Jml/Kps","Dosis/No",
                 "ID Lokasi Satu Sehat","Nama Unit/Poli","Dokter Penanggung Jawab","No.KTP Praktisi","ID Imunisasi Satu Sehat",
-                "No.Faktur"
+                "No.Faktur", "Expiration",
             }){
               @Override public boolean isCellEditable(int rowIndex, int colIndex){
                 boolean a = false;
@@ -87,7 +87,7 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
                  java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class,
                  java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class,
                  java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class,
-                 java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class
+                 java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class,java.lang.String.class,
              };
              @Override
              public Class getColumnClass(int columnIndex) {
@@ -100,7 +100,7 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
         tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 29; i++) {
+        for (i = 0; i < 30; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(20);
@@ -161,6 +161,8 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
             }else if(i==28){
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
+            }else if(i==29){
+                column.setPreferredWidth(100);
             }
         }
         tbObat.setDefaultRenderer(Object.class, new WarnaTable());
@@ -666,6 +668,7 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
                                         "\"display\": \""+tbObat.getValueAt(i,24).toString()+"\"" +
                                     "}," +
                                     "\"lotNumber\": \""+tbObat.getValueAt(i,19).toString()+"\"," +
+                                    "\"expirationDate\": \""+tbObat.getValueAt(i,29).toString()+"\"," +
                                     "\"route\": {" +
                                         "\"coding\": [" +
                                             "{" +
@@ -789,6 +792,7 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
                                         "\"display\": \""+tbObat.getValueAt(i,24).toString()+"\"" +
                                     "}," +
                                     "\"lotNumber\": \""+tbObat.getValueAt(i,19).toString()+"\"," +
+                                    "\"expirationDate\": \""+tbObat.getValueAt(i,29).toString()+"\"," +
                                     "\"route\": {" +
                                         "\"coding\": [" +
                                             "{" +
@@ -913,27 +917,26 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try{
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,reg_periksa.status_lanjut,satu_sehat_encounter.id_encounter,satu_sehat_mapping_vaksin.vaksin_code,satu_sehat_mapping_vaksin.vaksin_system,"+
-                   "satu_sehat_mapping_vaksin.kode_brng,satu_sehat_mapping_vaksin.vaksin_display,satu_sehat_mapping_vaksin.route_code,satu_sehat_mapping_vaksin.route_system,"+
-                   "satu_sehat_mapping_vaksin.route_display,satu_sehat_mapping_vaksin.dose_quantity_code,satu_sehat_mapping_vaksin.dose_quantity_system,"+
-                   "satu_sehat_mapping_vaksin.dose_quantity_unit,detail_pemberian_obat.no_batch,detail_pemberian_obat.tgl_perawatan,detail_pemberian_obat.jam,"+
-                   "detail_pemberian_obat.jml,aturan_pakai.aturan,satu_sehat_mapping_lokasi_ralan.id_lokasi_satusehat,poliklinik.nm_poli,pegawai.nama,pegawai.no_ktp as ktppraktisi,"+
-                   "ifnull(satu_sehat_immunization.id_immunization,'') as id_immunization,detail_pemberian_obat.no_faktur from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                   "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat "+
-                   "inner join detail_pemberian_obat on detail_pemberian_obat.no_rawat=reg_periksa.no_rawat "+
-                   "inner join satu_sehat_mapping_vaksin on satu_sehat_mapping_vaksin.kode_brng=detail_pemberian_obat.kode_brng "+
-                   "inner join aturan_pakai on aturan_pakai.tgl_perawatan=detail_pemberian_obat.tgl_perawatan and aturan_pakai.jam=detail_pemberian_obat.jam and "+
-                   "aturan_pakai.no_rawat=detail_pemberian_obat.no_rawat and aturan_pakai.kode_brng=detail_pemberian_obat.kode_brng "+
-                   "inner join satu_sehat_mapping_lokasi_ralan on satu_sehat_mapping_lokasi_ralan.kd_poli=reg_periksa.kd_poli "+
-                   "inner join poliklinik on poliklinik.kd_poli=satu_sehat_mapping_lokasi_ralan.kd_poli "+
-                   "inner join pegawai on reg_periksa.kd_dokter=pegawai.nik "+
-                   "inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "+
-                   "left join satu_sehat_immunization on satu_sehat_immunization.no_rawat=detail_pemberian_obat.no_rawat and satu_sehat_immunization.tgl_perawatan=detail_pemberian_obat.tgl_perawatan and "+
-                   "satu_sehat_immunization.jam=detail_pemberian_obat.jam and satu_sehat_immunization.kode_brng=detail_pemberian_obat.kode_brng and "+
-                   "satu_sehat_immunization.no_batch=detail_pemberian_obat.no_batch and satu_sehat_immunization.no_faktur=detail_pemberian_obat.no_faktur "+
-                   "where detail_pemberian_obat.no_batch<>'' and nota_jalan.tanggal between ? and ? "+
+             ps=koneksi.prepareStatement(
+                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp," +
+                    "reg_periksa.stts,reg_periksa.status_lanjut,satu_sehat_encounter.id_encounter,satu_sehat_mapping_vaksin.vaksin_code,satu_sehat_mapping_vaksin.vaksin_system," +
+                    "satu_sehat_mapping_vaksin.kode_brng,satu_sehat_mapping_vaksin.vaksin_display,satu_sehat_mapping_vaksin.route_code,satu_sehat_mapping_vaksin.route_system," +
+                    "satu_sehat_mapping_vaksin.route_display,satu_sehat_mapping_vaksin.dose_quantity_code,satu_sehat_mapping_vaksin.dose_quantity_system," +
+                    "satu_sehat_mapping_vaksin.dose_quantity_unit,detail_pemberian_obat.no_batch,detail_pemberian_obat.tgl_perawatan,detail_pemberian_obat.jam," +
+                    "detail_pemberian_obat.jml,satu_sehat_mapping_lokasi_ralan.id_lokasi_satusehat,poliklinik.nm_poli,pegawai.nama,pegawai.no_ktp as ktppraktisi," +
+                    "ifnull(satu_sehat_immunization.id_immunization,'') as id_immunization,detail_pemberian_obat.no_faktur, databarang.expire from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis " +
+                    "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat " +
+                    "inner join detail_pemberian_obat on detail_pemberian_obat.no_rawat=reg_periksa.no_rawat " +
+                    "inner join databarang on databarang.kode_brng=detail_pemberian_obat.kode_brng " +
+                    "inner join satu_sehat_mapping_vaksin on satu_sehat_mapping_vaksin.kode_brng=detail_pemberian_obat.kode_brng " +
+                    "inner join satu_sehat_mapping_lokasi_ralan on satu_sehat_mapping_lokasi_ralan.kd_poli=reg_periksa.kd_poli " +
+                    "inner join poliklinik on poliklinik.kd_poli=satu_sehat_mapping_lokasi_ralan.kd_poli " +
+                    "inner join pegawai on reg_periksa.kd_dokter=pegawai.nik " +
+                    "inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat " +
+                    "left join satu_sehat_immunization on satu_sehat_immunization.no_rawat=detail_pemberian_obat.no_rawat and satu_sehat_immunization.tgl_perawatan=detail_pemberian_obat.tgl_perawatan and " +
+                    "satu_sehat_immunization.jam=detail_pemberian_obat.jam and satu_sehat_immunization.kode_brng=detail_pemberian_obat.kode_brng and " +
+                    "satu_sehat_immunization.no_batch=detail_pemberian_obat.no_batch and satu_sehat_immunization.no_faktur=detail_pemberian_obat.no_faktur " +
+                    "WHERE nota_jalan.tanggal BETWEEN ? AND ? "+
                    (TCari.getText().equals("")?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
                    "pasien.nm_pasien like ? or pasien.no_ktp like ? or satu_sehat_mapping_vaksin.kode_brng like ? or satu_sehat_mapping_vaksin.vaksin_display like ? or "+
                    "reg_periksa.stts like ? or reg_periksa.status_lanjut like ?)")+" order by detail_pemberian_obat.tgl_perawatan,detail_pemberian_obat.jam");
@@ -951,15 +954,68 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
                     ps.setString(10,"%"+TCari.getText()+"%");
                 }
                 rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+"T"+rs.getString("jam_reg")+"+07:00",rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),rs.getString("status_lanjut"),rs.getString("id_encounter"),rs.getString("vaksin_code"),rs.getString("vaksin_system"),
-                        rs.getString("kode_brng"),rs.getString("vaksin_display"),rs.getString("route_code"),rs.getString("route_system"),rs.getString("route_display"),rs.getString("dose_quantity_code"),
-                        rs.getString("dose_quantity_system"),rs.getString("dose_quantity_unit"),rs.getString("no_batch"),rs.getString("tgl_perawatan")+"T"+rs.getString("jam")+"+07:00",
-                        rs.getString("jml"),rs.getString("aturan"),rs.getString("id_lokasi_satusehat"),rs.getString("nm_poli"),rs.getString("nama"),rs.getString("ktppraktisi"),
-                        rs.getString("id_immunization"),rs.getString("no_faktur")
-                    });
+                
+                while (rs.next()) {
+                    
+                    String kode_brng = rs.getString("kode_brng");
+                    
+                    String dosis = "1";
+                    
+                    ps = koneksi.prepareStatement(
+                    
+                        "SELECT detailpesan.no_batch, detailpesan.no_faktur, detailpesan.kadaluarsa " +
+                        "FROM detailpesan " +
+                        "WHERE detailpesan.kode_brng LIKE ? " +
+                        "ORDER BY detailpesan.kadaluarsa DESC " +
+                        "LIMIT 1;"
+                    );
+                    
+                    try {
+                        ps.setString(1, kode_brng);
+                        
+                        rs2 = ps.executeQuery();
+                        
+                        if(rs2.next()){
+                             Sequel.mengedittf("detail_pemberian_obat","no_batch=?","no_faktur=?",2,new String[]{
+                                rs2.getString("no_batch"), rs2.getString("no_faktur"), 
+                              });
+                             
+                             tabMode.addRow(new Object[]{
+                            false, 
+                            rs.getString("tgl_registrasi") + "T" + rs.getString("jam_reg") + "+07:00",
+                            rs.getString("no_rawat"), 
+                            rs.getString("no_rkm_medis"), 
+                            rs.getString("nm_pasien"),
+                            rs.getString("no_ktp"),
+                            rs.getString("stts"),
+                            rs.getString("status_lanjut"),
+                            rs.getString("id_encounter"),
+                            rs.getString("vaksin_code"),
+                            rs.getString("vaksin_system"),
+                            rs.getString("kode_brng"),
+                            rs.getString("vaksin_display"),
+                            rs.getString("route_code"),
+                            rs.getString("route_system"),
+                            rs.getString("route_display"),
+                            rs.getString("dose_quantity_code"),
+                            rs.getString("dose_quantity_system"),
+                            rs.getString("dose_quantity_unit"),
+                            rs2.getString("no_batch"),
+                            rs.getString("tgl_perawatan") + "T" + rs.getString("jam") + "+07:00",
+                            rs.getString("jml"),
+                            dosis,
+                            rs.getString("id_lokasi_satusehat"),
+                            rs.getString("nm_poli"),
+                            rs.getString("nama"),
+                            rs.getString("ktppraktisi"),
+                            rs.getString("id_immunization"),
+                            rs2.getString("no_faktur"), 
+                            rs.getString("expire")
+                        });
+                        }
+                    } catch (Exception e) {
+                        
+                    }
                 }
             } catch (Exception e) {
                 System.out.println("Notif : "+e);
@@ -978,13 +1034,12 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
                    "satu_sehat_mapping_vaksin.kode_brng,satu_sehat_mapping_vaksin.vaksin_display,satu_sehat_mapping_vaksin.route_code,satu_sehat_mapping_vaksin.route_system,"+
                    "satu_sehat_mapping_vaksin.route_display,satu_sehat_mapping_vaksin.dose_quantity_code,satu_sehat_mapping_vaksin.dose_quantity_system,"+
                    "satu_sehat_mapping_vaksin.dose_quantity_unit,detail_pemberian_obat.no_batch,detail_pemberian_obat.tgl_perawatan,detail_pemberian_obat.jam,"+
-                   "detail_pemberian_obat.jml,aturan_pakai.aturan,satu_sehat_mapping_lokasi_ralan.id_lokasi_satusehat,poliklinik.nm_poli,pegawai.nama,pegawai.no_ktp as ktppraktisi,"+
-                   "ifnull(satu_sehat_immunization.id_immunization,'') as id_immunization,detail_pemberian_obat.no_faktur from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
+                   "detail_pemberian_obat.jml,satu_sehat_mapping_lokasi_ralan.id_lokasi_satusehat,poliklinik.nm_poli,pegawai.nama,pegawai.no_ktp as ktppraktisi,"+
+                   "ifnull(satu_sehat_immunization.id_immunization,'') as id_immunization,detail_pemberian_obat.no_faktur, databarang.expire from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                    "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat "+
                    "inner join detail_pemberian_obat on detail_pemberian_obat.no_rawat=reg_periksa.no_rawat "+
+                   "inner join databarang on databarang.kode_brng=detail_pemberian_obat.kode_brng "+
                    "inner join satu_sehat_mapping_vaksin on satu_sehat_mapping_vaksin.kode_brng=detail_pemberian_obat.kode_brng "+
-                   "inner join aturan_pakai on aturan_pakai.tgl_perawatan=detail_pemberian_obat.tgl_perawatan and aturan_pakai.jam=detail_pemberian_obat.jam and "+
-                   "aturan_pakai.no_rawat=detail_pemberian_obat.no_rawat and aturan_pakai.kode_brng=detail_pemberian_obat.kode_brng "+
                    "inner join satu_sehat_mapping_lokasi_ralan on satu_sehat_mapping_lokasi_ralan.kd_poli=reg_periksa.kd_poli "+
                    "inner join poliklinik on poliklinik.kd_poli=satu_sehat_mapping_lokasi_ralan.kd_poli "+
                    "inner join pegawai on reg_periksa.kd_dokter=pegawai.nik "+
@@ -992,7 +1047,7 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
                    "left join satu_sehat_immunization on satu_sehat_immunization.no_rawat=detail_pemberian_obat.no_rawat and satu_sehat_immunization.tgl_perawatan=detail_pemberian_obat.tgl_perawatan and "+
                    "satu_sehat_immunization.jam=detail_pemberian_obat.jam and satu_sehat_immunization.kode_brng=detail_pemberian_obat.kode_brng and "+
                    "satu_sehat_immunization.no_batch=detail_pemberian_obat.no_batch and satu_sehat_immunization.no_faktur=detail_pemberian_obat.no_faktur "+
-                   "where detail_pemberian_obat.no_batch<>'' and nota_inap.tanggal between ? and ? "+
+                   "where nota_inap.tanggal between ? and ? "+
                    (TCari.getText().equals("")?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
                    "pasien.nm_pasien like ? or pasien.no_ktp like ? or satu_sehat_mapping_vaksin.kode_brng like ? or satu_sehat_mapping_vaksin.vaksin_display like ? or "+
                    "reg_periksa.stts like ? or reg_periksa.status_lanjut like ?)")+" order by detail_pemberian_obat.tgl_perawatan,detail_pemberian_obat.jam");
@@ -1010,15 +1065,64 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
                     ps.setString(10,"%"+TCari.getText()+"%");
                 }
                 rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+"T"+rs.getString("jam_reg")+"+07:00",rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("stts"),rs.getString("status_lanjut"),rs.getString("id_encounter"),rs.getString("vaksin_code"),rs.getString("vaksin_system"),
-                        rs.getString("kode_brng"),rs.getString("vaksin_display"),rs.getString("route_code"),rs.getString("route_system"),rs.getString("route_display"),rs.getString("dose_quantity_code"),
-                        rs.getString("dose_quantity_system"),rs.getString("dose_quantity_unit"),rs.getString("no_batch"),rs.getString("tgl_perawatan")+"T"+rs.getString("jam")+"+07:00",
-                        rs.getString("jml"),rs.getString("aturan"),rs.getString("id_lokasi_satusehat"),rs.getString("nm_poli"),rs.getString("nama"),rs.getString("ktppraktisi"),
-                        rs.getString("id_immunization"),rs.getString("no_faktur")
-                    });
+                                
+                while (rs.next()) {
+                    
+                    String kode_brng = rs.getString("kode_brng");
+                    
+                    String dosis = "1";
+                    
+                    ps = koneksi.prepareStatement(
+                    
+                        "SELECT detailpesan.no_batch, detailpesan.no_faktur, detailpesan.kadaluarsa " +
+                        "FROM detailpesan " +
+                        "WHERE detailpesan.kode_brng LIKE ? " +
+                        "ORDER BY detailpesan.kadaluarsa DESC " +
+                        "LIMIT 1;"
+                    );
+                    
+                    try {
+                        ps.setString(1, kode_brng);
+                        
+                        rs2 = ps.executeQuery();
+                        
+                        if(rs2.next()){
+                             tabMode.addRow(new Object[]{
+                            false, 
+                            rs.getString("tgl_registrasi") + "T" + rs.getString("jam_reg") + "+07:00",
+                            rs.getString("no_rawat"), 
+                            rs.getString("no_rkm_medis"), 
+                            rs.getString("nm_pasien"),
+                            rs.getString("no_ktp"),
+                            rs.getString("stts"),
+                            rs.getString("status_lanjut"),
+                            rs.getString("id_encounter"),
+                            rs.getString("vaksin_code"),
+                            rs.getString("vaksin_system"),
+                            rs.getString("kode_brng"),
+                            rs.getString("vaksin_display"),
+                            rs.getString("route_code"),
+                            rs.getString("route_system"),
+                            rs.getString("route_display"),
+                            rs.getString("dose_quantity_code"),
+                            rs.getString("dose_quantity_system"),
+                            rs.getString("dose_quantity_unit"),
+                            rs2.getString("no_batch"),
+                            rs.getString("tgl_perawatan") + "T" + rs.getString("jam") + "+07:00",
+                            rs.getString("jml"),
+                            dosis,
+                            rs.getString("id_lokasi_satusehat"),
+                            rs.getString("nm_poli"),
+                            rs.getString("nama"),
+                            rs.getString("ktppraktisi"),
+                            rs.getString("id_immunization"),
+                            rs2.getString("no_faktur"), 
+                            rs.getString("expire")
+                        });
+                        }
+                    } catch (Exception e) {
+                        
+                    }
                 }
             } catch (Exception e) {
                 System.out.println("Notif : "+e);
