@@ -713,7 +713,7 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
                                     "]," +
                                     "\"protocolApplied\" : ["+
                                         "{"+
-                                            "\"doseNumberPositiveInt\" : "+tbObat.getValueAt(i,22).toString().toLowerCase().replaceAll("dosis","").replaceAll(" ","")+
+                                            "\"doseNumberPositiveInt\" : "+tbObat.getValueAt(i,22).toString().replaceAll("[^0-9.]", "")+
                                         "}"+
                                     "]"+
                                 "}";
@@ -837,7 +837,7 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
                                     "]," +
                                     "\"protocolApplied\" : ["+
                                         "{"+
-                                            "\"doseNumberPositiveInt\" : "+tbObat.getValueAt(i,22).toString().toLowerCase().replaceAll("dosis","").replaceAll(" ","")+
+                                            "\"doseNumberPositiveInt\" : "+tbObat.getValueAt(i,22).toString().replaceAll("[^0-9.]", "")+
                                         "}"+
                                     "]"+
                                 "}";

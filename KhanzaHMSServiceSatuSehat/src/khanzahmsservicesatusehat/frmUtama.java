@@ -2795,7 +2795,7 @@ public class frmUtama extends javax.swing.JFrame {
                                             "]," +
                                             "\"protocolApplied\" : ["+
                                                 "{"+
-                                                    "\"doseNumberPositiveInt\" : "+rs.getString("aturan").toLowerCase().replaceAll("dosis","").replaceAll(" ","")+
+                                                    "\"doseNumberPositiveInt\" : "+rs.getString("aturan").replaceAll("[^0-9.]", "")+
                                                 "}"+
                                             "]"+
                                         "}";
@@ -2933,7 +2933,7 @@ public class frmUtama extends javax.swing.JFrame {
                                             "]," +
                                             "\"protocolApplied\" : ["+
                                                 "{"+
-                                                    "\"doseNumberPositiveInt\" : "+rs.getString("aturan").toLowerCase().replaceAll("dosis","").replaceAll(" ","")+
+                                                    "\"doseNumberPositiveInt\" : "+rs.getString("aturan").replaceAll("[^0-9.]", "")+
                                                 "}"+
                                             "]"+
                                         "}";
@@ -4433,7 +4433,7 @@ public class frmUtama extends javax.swing.JFrame {
                                                 "]" +
                                             "}," +
                                             "\"medicationReference\": {" +
-                                                "\"reference\": \"Medication/"+rs.getString("id_medicationrequest")+"\"," +
+                                                "\"reference\": \"Medication/"+rs.getString("id_medication")+"\"," +
                                                 "\"display\": \""+rs.getString("obat_display")+"\"" +
                                             "}," +
                                             "\"subject\": {" +
@@ -4610,7 +4610,7 @@ public class frmUtama extends javax.swing.JFrame {
                                                 "]" +
                                             "}," +
                                             "\"medicationReference\": {" +
-                                                "\"reference\": \"Medication/"+rs.getString("id_medicationrequest")+"\"," +
+                                                "\"reference\": \"Medication/"+rs.getString("id_medication")+"\"," +
                                                 "\"display\": \""+rs.getString("obat_display")+"\"" +
                                             "}," +
                                             "\"subject\": {" +
