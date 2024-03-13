@@ -218,9 +218,6 @@
             </Property>
             <Property name="name" type="java.lang.String" value="TabRawat" noResource="true"/>
           </Properties>
-          <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="TabRawatMouseClicked"/>
-          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
               <BorderConstraints direction="Center"/>
@@ -498,7 +495,7 @@
                             </Property>
                             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                               <StringArray count="1">
-                                <StringItem index="0" value="08-03-2024 20:11:06"/>
+                                <StringItem index="0" value="12-03-2024 11:35:07"/>
                               </StringArray>
                             </Property>
                             <Property name="displayFormat" type="java.lang.String" value="dd-MM-yyyy HH:mm:ss"/>
@@ -1412,20 +1409,6 @@
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                               <AbsoluteConstraints x="0" y="250" width="270" height="23"/>
-                            </Constraint>
-                          </Constraints>
-                        </Component>
-                        <Component class="widget.TextBox" name="KetAnamnesis3">
-                          <Properties>
-                            <Property name="focusTraversalPolicyProvider" type="boolean" value="true"/>
-                            <Property name="name" type="java.lang.String" value="KetAnamnesis3" noResource="true"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="KetAnamnesis3KeyPressed"/>
-                          </Events>
-                          <Constraints>
-                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                              <AbsoluteConstraints x="700" y="220" width="154" height="23"/>
                             </Constraint>
                           </Constraints>
                         </Component>
@@ -3374,7 +3357,7 @@
                             </Constraint>
                           </Constraints>
                         </Component>
-                        <Component class="widget.ComboBox" name="ComposMentis">
+                        <Component class="widget.ComboBox" name="Kesadaran">
                           <Properties>
                             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                               <StringArray count="6">
@@ -3386,10 +3369,10 @@
                                 <StringItem index="5" value="Coma"/>
                               </StringArray>
                             </Property>
-                            <Property name="name" type="java.lang.String" value="ComposMentis" noResource="true"/>
+                            <Property name="name" type="java.lang.String" value="Kesadaran" noResource="true"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="ComposMentisKeyPressed"/>
+                            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="KesadaranKeyPressed"/>
                           </Events>
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -7140,9 +7123,6 @@
                             <Property name="focusTraversalPolicyProvider" type="boolean" value="true"/>
                             <Property name="name" type="java.lang.String" value="NilaiGizi1" noResource="true"/>
                           </Properties>
-                          <Events>
-                            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="NilaiGizi1KeyPressed"/>
-                          </Events>
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                               <AbsoluteConstraints x="794" y="2000" width="60" height="23"/>
@@ -7189,9 +7169,6 @@
                             <Property name="focusTraversalPolicyProvider" type="boolean" value="true"/>
                             <Property name="name" type="java.lang.String" value="NilaiGizi2" noResource="true"/>
                           </Properties>
-                          <Events>
-                            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="NilaiGizi2KeyPressed"/>
-                          </Events>
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                               <AbsoluteConstraints x="794" y="2030" width="60" height="23"/>
@@ -7238,9 +7215,6 @@
                             <Property name="focusTraversalPolicyProvider" type="boolean" value="true"/>
                             <Property name="name" type="java.lang.String" value="NilaiGizi3" noResource="true"/>
                           </Properties>
-                          <Events>
-                            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="NilaiGizi3KeyPressed"/>
-                          </Events>
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                               <AbsoluteConstraints x="794" y="2060" width="60" height="23"/>
@@ -7250,7 +7224,7 @@
                         <Component class="widget.Label" name="jLabel240">
                           <Properties>
                             <Property name="horizontalAlignment" type="int" value="2"/>
-                            <Property name="text" type="java.lang.String" value="Total Skor"/>
+                            <Property name="text" type="java.lang.String" value="Keterangan"/>
                             <Property name="name" type="java.lang.String" value="jLabel240" noResource="true"/>
                           </Properties>
                           <Constraints>
@@ -7267,9 +7241,6 @@
                             <Property name="focusTraversalPolicyProvider" type="boolean" value="true"/>
                             <Property name="name" type="java.lang.String" value="TotalNilaiGizi" noResource="true"/>
                           </Properties>
-                          <Events>
-                            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TotalNilaiGiziKeyPressed"/>
-                          </Events>
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                               <AbsoluteConstraints x="794" y="2090" width="60" height="23"/>
@@ -7286,7 +7257,7 @@
                           </Events>
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                              <AbsoluteConstraints x="104" y="2090" width="390" height="23"/>
+                              <AbsoluteConstraints x="111" y="2090" width="383" height="23"/>
                             </Constraint>
                           </Constraints>
                         </Component>
@@ -7297,7 +7268,7 @@
                           </Properties>
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                              <AbsoluteConstraints x="0" y="2090" width="100" height="23"/>
+                              <AbsoluteConstraints x="0" y="2090" width="107" height="23"/>
                             </Constraint>
                           </Constraints>
                         </Component>
@@ -8081,7 +8052,7 @@
                             </Property>
                             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                               <StringArray count="1">
-                                <StringItem index="0" value="08-03-2024"/>
+                                <StringItem index="0" value="12-03-2024"/>
                               </StringArray>
                             </Property>
                             <Property name="displayFormat" type="java.lang.String" value="dd-MM-yyyy"/>
@@ -8258,12 +8229,10 @@
                         </Component>
                         <Component class="widget.TextBox" name="KeteranganTingkatRisiko">
                           <Properties>
+                            <Property name="editable" type="boolean" value="false"/>
                             <Property name="focusTraversalPolicyProvider" type="boolean" value="true"/>
                             <Property name="name" type="java.lang.String" value="KeteranganTingkatRisiko" noResource="true"/>
                           </Properties>
-                          <Events>
-                            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="KeteranganTingkatRisikoKeyPressed"/>
-                          </Events>
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                               <AbsoluteConstraints x="126" y="2350" width="368" height="23"/>
@@ -8294,12 +8263,10 @@
                         </Component>
                         <Component class="widget.TextBox" name="KeteranganPenilaianNyeri">
                           <Properties>
+                            <Property name="editable" type="boolean" value="false"/>
                             <Property name="focusTraversalPolicyProvider" type="boolean" value="true"/>
                             <Property name="name" type="java.lang.String" value="KeteranganPenilaianNyeri" noResource="true"/>
                           </Properties>
-                          <Events>
-                            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="KeteranganPenilaianNyeriKeyPressed"/>
-                          </Events>
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                               <AbsoluteConstraints x="111" y="2550" width="383" height="23"/>
@@ -8314,6 +8281,17 @@
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                               <AbsoluteConstraints x="0" y="2550" width="107" height="23"/>
+                            </Constraint>
+                          </Constraints>
+                        </Component>
+                        <Component class="widget.Label" name="jLabel270">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Total :"/>
+                            <Property name="name" type="java.lang.String" value="jLabel270" noResource="true"/>
+                          </Properties>
+                          <Constraints>
+                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                              <AbsoluteConstraints x="710" y="2090" width="70" height="23"/>
                             </Constraint>
                           </Constraints>
                         </Component>
@@ -8405,7 +8383,7 @@
                         </Property>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                           <StringArray count="1">
-                            <StringItem index="0" value="08-03-2024"/>
+                            <StringItem index="0" value="12-03-2024"/>
                           </StringArray>
                         </Property>
                         <Property name="displayFormat" type="java.lang.String" value="dd-MM-yyyy"/>
@@ -8433,7 +8411,7 @@
                         </Property>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                           <StringArray count="1">
-                            <StringItem index="0" value="08-03-2024"/>
+                            <StringItem index="0" value="12-03-2024"/>
                           </StringArray>
                         </Property>
                         <Property name="displayFormat" type="java.lang.String" value="dd-MM-yyyy"/>
