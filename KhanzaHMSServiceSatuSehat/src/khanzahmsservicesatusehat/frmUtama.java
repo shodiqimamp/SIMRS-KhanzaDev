@@ -217,34 +217,68 @@ public class frmUtama extends javax.swing.JFrame {
                     medication();
                 }
                 
-                if((nilai_jam%4==0)&&(detik.equals("01")&&menit.equals("01"))){
-                    encounter();
-                    observationTTV();
-                    vaksin();
-                    prosedur();
-                    condition();
-                    clinicalimpression();
-                    dietgizi();
-                    medicationrequest();
-                    medicationdispense();
-                    servicerequestradiologi();
-                    specimenradiologi();
-                    observationradiologi();
-                    diagnosticreportradiologi();
-                    servicerequestlabpk();
-                    servicerequestlabmb();
-                    specimenlabpk();
-                    specimenlabmb();
-                    observationlabpk();
-                    observationlabmb();
-                    diagnosticreportlabpk();
-                    diagnosticreportlabmb();
+//                if((nilai_jam%4==0)&&(detik.equals("01")&&menit.equals("01"))){
+//                    encounter();
+//                    observationTTV();
+//                    vaksin();
+//                    prosedur();
+//                    condition();
+//                    clinicalimpression();
+//                    dietgizi();
+//                    medicationrequest();
+//                    medicationdispense();
+//                    servicerequestradiologi();
+//                    specimenradiologi();
+//                    observationradiologi();
+//                    diagnosticreportradiologi();
+//                    servicerequestlabpk();
+//                    servicerequestlabmb();
+//                    specimenlabpk();
+//                    specimenlabmb();
+//                    observationlabpk();
+//                    observationlabmb();
+//                    diagnosticreportlabpk();
+//                    diagnosticreportlabmb();
+//                }
+                
+                if((jam.equals("22"))&&(detik.equals("01")&&menit.equals("55"))){
+                    saveDiet();
                 }
             }
         };
         // Timer
         new Timer(1000, taskPerformer).start();
     }
+    
+        private String[] saveBatchVaksin(String kode_barang) {
+            String[] batchInfo = new String[3]; // Array to store batch information
+
+            try {
+                String kode_brng = kode_barang;
+                String dosis = "1";
+
+                ps = koneksi.prepareStatement(
+                    "SELECT detailpesan.no_batch, detailpesan.no_faktur, detailpesan.kadaluarsa " +
+                    "FROM detailpesan " +
+                    "WHERE detailpesan.kode_brng LIKE ? " +
+                    "ORDER BY detailpesan.kadaluarsa DESC " +
+                    "LIMIT 1;"
+                );
+
+                ps.setString(1, kode_brng);
+                rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    batchInfo[0] = rs.getString("no_batch"); // Store batch number
+                    batchInfo[1] = rs.getString("no_faktur"); // Store invoice number
+                    batchInfo[2] = rs.getString("kadaluarsa"); // Store expiration date
+                }
+            } catch (Exception e) {
+                System.out.println("Notif : " + e);
+            }
+
+            return batchInfo;
+        }
     
      private void saveDiet(){
         try{
@@ -3764,7 +3798,7 @@ public class frmUtama extends javax.swing.JFrame {
                                                 "}" +
                                             "]," +
                                             "\"medicationReference\": {" +
-                                                "\"reference\": \"Medication/"+rs.getString("id_medicationrequest")+"\"," +
+                                                "\"reference\": \"Medication/"+rs.getString("id_medication")+"\"," +
                                                 "\"display\": \""+rs.getString("obat_display")+"\"" +
                                             "}," +
                                             "\"subject\": {" +
@@ -3929,7 +3963,7 @@ public class frmUtama extends javax.swing.JFrame {
                                                 "}" +
                                             "]," +
                                             "\"medicationReference\": {" +
-                                                "\"reference\": \"Medication/"+rs.getString("id_medicationrequest")+"\"," +
+                                                "\"reference\": \"Medication/"+rs.getString("id_medication")+"\"," +
                                                 "\"display\": \""+rs.getString("obat_display")+"\"" +
                                             "}," +
                                             "\"subject\": {" +
@@ -4096,7 +4130,7 @@ public class frmUtama extends javax.swing.JFrame {
                                                 "}" +
                                             "]," +
                                             "\"medicationReference\": {" +
-                                                "\"reference\": \"Medication/"+rs.getString("id_medicationrequest")+"\"," +
+                                                "\"reference\": \"Medication/"+rs.getString("id_medication")+"\"," +
                                                 "\"display\": \""+rs.getString("obat_display")+"\"" +
                                             "}," +
                                             "\"subject\": {" +
@@ -4263,7 +4297,7 @@ public class frmUtama extends javax.swing.JFrame {
                                                 "}" +
                                             "]," +
                                             "\"medicationReference\": {" +
-                                                "\"reference\": \"Medication/"+rs.getString("id_medicationrequest")+"\"," +
+                                                "\"reference\": \"Medication/"+rs.getString("id_medication")+"\"," +
                                                 "\"display\": \""+rs.getString("obat_display")+"\"" +
                                             "}," +
                                             "\"subject\": {" +
