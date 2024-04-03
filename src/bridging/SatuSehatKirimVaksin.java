@@ -705,7 +705,7 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
                                         "{" +
                                             "\"coding\": [" +
                                                 "{" +
-                                                    "\"system\": \"https://terminology.kemkes.go.id/CodeSystem/immunization-reason\"," +
+                                                    "\"system\": \"http://terminology.kemkes.go.id/CodeSystem/immunization-reason\"," +
                                                     "\"code\": \"IM-Program\"," +
                                                     "\"display\" : \"Imunisasi Program\"" +
                                                 "}" +

@@ -39,8 +39,8 @@ public class frmUtama extends javax.swing.JFrame {
     private ObjectMapper mapper= new ObjectMapper();
     private JsonNode root;
     private JsonNode response;
-    private PreparedStatement ps;
-    private ResultSet rs;
+    private PreparedStatement ps, ps2;
+    private ResultSet rs, rs2;
     private String[] arrSplit;
     private SimpleDateFormat tanggalFormat = new SimpleDateFormat("yyyy-MM-dd");
     private Date date = new Date();  
@@ -220,7 +220,7 @@ public class frmUtama extends javax.swing.JFrame {
 //                if((nilai_jam%4==0)&&(detik.equals("01")&&menit.equals("01"))){
 //                    encounter();
 //                    observationTTV();
-                    vaksin();
+//                    vaksin();
 //                    prosedur();
 //                    condition();
 //                    clinicalimpression();
@@ -244,40 +244,87 @@ public class frmUtama extends javax.swing.JFrame {
                 if((jam.equals("22"))&&(detik.equals("01")&&menit.equals("55"))){
                     saveDiet();
                 }
+                 if((detik.equals("01")&&menit.equals("04"))){
+//                    saveBatchVaksin();
+                    vaksin();
+                }
             }
         };
         // Timer
         new Timer(1000, taskPerformer).start();
     }
     
-        private String[] saveBatchVaksin(String kode_barang) {
-            String[] batchInfo = new String[3]; // Array to store batch information
-
+        private void saveBatchVaksin() {
+            
             try {
-                String kode_brng = kode_barang;
-                String dosis = "1";
-
                 ps = koneksi.prepareStatement(
-                    "SELECT detailpesan.no_batch, detailpesan.no_faktur, detailpesan.kadaluarsa " +
-                    "FROM detailpesan " +
-                    "WHERE detailpesan.kode_brng LIKE ? " +
-                    "ORDER BY detailpesan.kadaluarsa DESC " +
-                    "LIMIT 1;"
+                    "select satu_sehat_encounter.id_encounter,satu_sehat_mapping_vaksin.vaksin_code,satu_sehat_mapping_vaksin.vaksin_system, detail_pemberian_obat.no_rawat," +
+                    "satu_sehat_mapping_vaksin.kode_brng,satu_sehat_mapping_vaksin.vaksin_display,satu_sehat_mapping_vaksin.route_code,satu_sehat_mapping_vaksin.route_system, " +
+                    "satu_sehat_mapping_vaksin.route_display,satu_sehat_mapping_vaksin.dose_quantity_code,satu_sehat_mapping_vaksin.dose_quantity_system, " +
+                    "satu_sehat_mapping_vaksin.dose_quantity_unit,detail_pemberian_obat.tgl_perawatan,detail_pemberian_obat.jam, " +
+                    "detail_pemberian_obat.jml, detail_pemberian_obat.no_batch, detail_pemberian_obat.no_faktur, " +
+                    "ifnull(satu_sehat_immunization.id_immunization,'') as id_immunization " +
+                    "FROM detail_pemberian_obat " +
+                    "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=detail_pemberian_obat.no_rawat " +
+                    "inner join satu_sehat_mapping_vaksin on satu_sehat_mapping_vaksin.kode_brng=detail_pemberian_obat.kode_brng " +
+                    "inner join nota_jalan on nota_jalan.no_rawat=detail_pemberian_obat.no_rawat " +
+                    "left join satu_sehat_immunization on satu_sehat_immunization.no_rawat=detail_pemberian_obat.no_rawat and satu_sehat_immunization.tgl_perawatan=detail_pemberian_obat.tgl_perawatan and " +
+                    "satu_sehat_immunization.jam=detail_pemberian_obat.jam and satu_sehat_immunization.kode_brng=detail_pemberian_obat.kode_brng and " +
+                    "satu_sehat_immunization.no_batch=detail_pemberian_obat.no_batch and satu_sehat_immunization.no_faktur=detail_pemberian_obat.no_faktur " +
+                    "WHERE nota_jalan.tanggal BETWEEN ? AND ? and detail_pemberian_obat.no_batch = '' and detail_pemberian_obat.no_faktur = ''"
                 );
-
-                ps.setString(1, kode_brng);
-                rs = ps.executeQuery();
-
-                if (rs.next()) {
-                    batchInfo[0] = rs.getString("no_batch"); // Store batch number
-                    batchInfo[1] = rs.getString("no_faktur"); // Store invoice number
-                    batchInfo[2] = rs.getString("kadaluarsa"); // Store expiration date
+                
+                try {
+                    ps.setString(1,Tanggal1.getText()+" ");
+                    ps.setString(2,Tanggal2.getText()+" ");
+                    rs=ps.executeQuery();
+                    while(rs.next()){
+                        String kode_brng = rs.getString("kode_brng");
+                        String no_rawat = rs.getString("no_rawat");
+                        
+                        ps2 = koneksi.prepareStatement(
+                            "SELECT data_batch.no_batch, data_batch.no_faktur, data_batch.tgl_kadaluarsa " +
+                            "FROM data_batch " +
+                            "WHERE data_batch.kode_brng LIKE ? " +
+                            "ORDER BY data_batch.tgl_kadaluarsa DESC " +
+                            "LIMIT 1;"
+                        );
+                        
+                        try {
+                            ps2.setString(1, kode_brng);
+                            
+                            rs2 = ps2.executeQuery();
+                            
+                            if(rs2.next()){
+                                String no_faktur = rs2.getString("no_faktur");
+                                String no_batch = rs2.getString("no_batch");
+                                if(Sequel.mengedittf("detail_pemberian_obat","no_rawat=? and kode_brng=?","no_batch=?, no_faktur=?",4,new String[]{
+                                        no_batch, no_faktur ,no_rawat, kode_brng,
+                                    }) == true){
+                                           Sequel.menyimpantf("aturan_pakai","?,?,?,?,?","Data",5,new String[]{
+                                                rs.getString("tgl_perawatan"), rs.getString("jam"), rs.getString("no_rawat"), kode_brng, "1"
+                                            });
+                                        }
+                                else{
+                                     System.out.println("GAGALS");
+                                }
+                            }
+//                             System.out.println(no_rawat+ ", " + kode_brng+ ", " + no_batch + ", " + no_faktur);
+                             
+                             System.out.println("Notifikasi : Data Imnunisasi Vaksin Tanggal: " + Tanggal1.getText() +" s/d "+ Tanggal2.getText() +" Berhasil Disimpan !");
+                             TeksArea.append("Notifikasi : Data Imnunisasi Vaksin Tanggal: " + Tanggal1.getText() +" s/d "+ Tanggal2.getText() +" Berhasil Disimpan ! \n");
+                              
+                        } catch (Exception e) {
+                            System.out.println(e + "3");
+                        }
+                    }
+                     
+                } catch (Exception e) {
+                    System.out.println(e + "2");
                 }
             } catch (Exception e) {
-                System.out.println("Notif : " + e);
+                System.out.println(e + "1");
             }
-
-            return batchInfo;
         }
     
      private void saveDiet(){
@@ -2739,13 +2786,11 @@ public class frmUtama extends javax.swing.JFrame {
                    "satu_sehat_mapping_vaksin.kode_brng,satu_sehat_mapping_vaksin.vaksin_display,satu_sehat_mapping_vaksin.route_code,satu_sehat_mapping_vaksin.route_system,"+
                    "satu_sehat_mapping_vaksin.route_display,satu_sehat_mapping_vaksin.dose_quantity_code,satu_sehat_mapping_vaksin.dose_quantity_system,"+
                    "satu_sehat_mapping_vaksin.dose_quantity_unit,detail_pemberian_obat.no_batch,detail_pemberian_obat.tgl_perawatan,detail_pemberian_obat.jam,"+
-                   "detail_pemberian_obat.jml,aturan_pakai.aturan,satu_sehat_mapping_lokasi_ralan.id_lokasi_satusehat,poliklinik.nm_poli,pegawai.no_ktp as ktppraktisi,"+
+                   "detail_pemberian_obat.jml,satu_sehat_mapping_lokasi_ralan.id_lokasi_satusehat,poliklinik.nm_poli,pegawai.no_ktp as ktppraktisi,"+
                    "ifnull(satu_sehat_immunization.id_immunization,'') as id_immunization,detail_pemberian_obat.no_faktur from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                    "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat "+
                    "inner join detail_pemberian_obat on detail_pemberian_obat.no_rawat=reg_periksa.no_rawat "+
                    "inner join satu_sehat_mapping_vaksin on satu_sehat_mapping_vaksin.kode_brng=detail_pemberian_obat.kode_brng "+
-                   "inner join aturan_pakai on aturan_pakai.tgl_perawatan=detail_pemberian_obat.tgl_perawatan and aturan_pakai.jam=detail_pemberian_obat.jam and "+
-                   "aturan_pakai.no_rawat=detail_pemberian_obat.no_rawat and aturan_pakai.kode_brng=detail_pemberian_obat.kode_brng "+
                    "inner join satu_sehat_mapping_lokasi_ralan on satu_sehat_mapping_lokasi_ralan.kd_poli=reg_periksa.kd_poli "+
                    "inner join poliklinik on poliklinik.kd_poli=satu_sehat_mapping_lokasi_ralan.kd_poli "+
                    "inner join pegawai on reg_periksa.kd_dokter=pegawai.nik "+
@@ -2753,7 +2798,7 @@ public class frmUtama extends javax.swing.JFrame {
                    "left join satu_sehat_immunization on satu_sehat_immunization.no_rawat=detail_pemberian_obat.no_rawat and satu_sehat_immunization.tgl_perawatan=detail_pemberian_obat.tgl_perawatan and "+
                    "satu_sehat_immunization.jam=detail_pemberian_obat.jam and satu_sehat_immunization.kode_brng=detail_pemberian_obat.kode_brng and "+
                    "satu_sehat_immunization.no_batch=detail_pemberian_obat.no_batch and satu_sehat_immunization.no_faktur=detail_pemberian_obat.no_faktur "+
-                   "where detail_pemberian_obat.no_batch<>'' and nota_jalan.tanggal between ? and ?");
+                   "where nota_jalan.tanggal between ? and ?");
             try {
                 ps.setString(1,Tanggal1.getText());
                 ps.setString(2,Tanggal2.getText());
@@ -2763,6 +2808,7 @@ public class frmUtama extends javax.swing.JFrame {
                         try {
                             idpasien=cekViaSatuSehat.tampilIDPasien(rs.getString("no_ktp"));
                             iddokter=cekViaSatuSehat.tampilIDParktisi(rs.getString("ktppraktisi"));
+                            
                             try{
                                 headers = new HttpHeaders();
                                 headers.setContentType(MediaType.APPLICATION_JSON);
@@ -2829,7 +2875,7 @@ public class frmUtama extends javax.swing.JFrame {
                                                 "{" +
                                                     "\"coding\": [" +
                                                         "{" +
-                                                            "\"system\": \"https://terminology.kemkes.go.id/CodeSystem/immunization-reason\"," +
+                                                            "\"system\": \"http://terminology.kemkes.go.id/CodeSystem/immunization-reason\"," +
                                                             "\"code\": \"IM-Program\"," +
                                                             "\"display\" : \"Imunisasi Program\"" +
                                                         "}" +
@@ -2838,7 +2884,7 @@ public class frmUtama extends javax.swing.JFrame {
                                             "]," +
                                             "\"protocolApplied\" : ["+
                                                 "{"+
-                                                    "\"doseNumberPositiveInt\" : "+rs.getString("aturan").replaceAll("[^0-9.]", "")+
+                                                    "\"doseNumberPositiveInt\" : 1"+
                                                 "}"+
                                             "]"+
                                         "}";
@@ -2878,13 +2924,11 @@ public class frmUtama extends javax.swing.JFrame {
                    "satu_sehat_mapping_vaksin.kode_brng,satu_sehat_mapping_vaksin.vaksin_display,satu_sehat_mapping_vaksin.route_code,satu_sehat_mapping_vaksin.route_system,"+
                    "satu_sehat_mapping_vaksin.route_display,satu_sehat_mapping_vaksin.dose_quantity_code,satu_sehat_mapping_vaksin.dose_quantity_system,"+
                    "satu_sehat_mapping_vaksin.dose_quantity_unit,detail_pemberian_obat.no_batch,detail_pemberian_obat.tgl_perawatan,detail_pemberian_obat.jam,"+
-                   "detail_pemberian_obat.jml,aturan_pakai.aturan,satu_sehat_mapping_lokasi_ralan.id_lokasi_satusehat,poliklinik.nm_poli,pegawai.no_ktp as ktppraktisi,"+
+                   "detail_pemberian_obat.jml,satu_sehat_mapping_lokasi_ralan.id_lokasi_satusehat,poliklinik.nm_poli,pegawai.no_ktp as ktppraktisi,"+
                    "ifnull(satu_sehat_immunization.id_immunization,'') as id_immunization,detail_pemberian_obat.no_faktur from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                    "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat "+
                    "inner join detail_pemberian_obat on detail_pemberian_obat.no_rawat=reg_periksa.no_rawat "+
                    "inner join satu_sehat_mapping_vaksin on satu_sehat_mapping_vaksin.kode_brng=detail_pemberian_obat.kode_brng "+
-                   "inner join aturan_pakai on aturan_pakai.tgl_perawatan=detail_pemberian_obat.tgl_perawatan and aturan_pakai.jam=detail_pemberian_obat.jam and "+
-                   "aturan_pakai.no_rawat=detail_pemberian_obat.no_rawat and aturan_pakai.kode_brng=detail_pemberian_obat.kode_brng "+
                    "inner join satu_sehat_mapping_lokasi_ralan on satu_sehat_mapping_lokasi_ralan.kd_poli=reg_periksa.kd_poli "+
                    "inner join poliklinik on poliklinik.kd_poli=satu_sehat_mapping_lokasi_ralan.kd_poli "+
                    "inner join pegawai on reg_periksa.kd_dokter=pegawai.nik "+
@@ -2892,7 +2936,7 @@ public class frmUtama extends javax.swing.JFrame {
                    "left join satu_sehat_immunization on satu_sehat_immunization.no_rawat=detail_pemberian_obat.no_rawat and satu_sehat_immunization.tgl_perawatan=detail_pemberian_obat.tgl_perawatan and "+
                    "satu_sehat_immunization.jam=detail_pemberian_obat.jam and satu_sehat_immunization.kode_brng=detail_pemberian_obat.kode_brng and "+
                    "satu_sehat_immunization.no_batch=detail_pemberian_obat.no_batch and satu_sehat_immunization.no_faktur=detail_pemberian_obat.no_faktur "+
-                   "where detail_pemberian_obat.no_batch<>'' and nota_inap.tanggal between ? and ? ");
+                   "where nota_inap.tanggal between ? and ? ");
             try {
                 ps.setString(1,Tanggal1.getText());
                 ps.setString(2,Tanggal2.getText());
@@ -2902,6 +2946,8 @@ public class frmUtama extends javax.swing.JFrame {
                         try {
                             idpasien=cekViaSatuSehat.tampilIDPasien(rs.getString("no_ktp"));
                             iddokter=cekViaSatuSehat.tampilIDParktisi(rs.getString("ktppraktisi"));
+                            String no_batch = Sequel.cariIsi("SELECT data_batch.no_batch FROM data_batch WHERE data_batch.kode_brng='"+rs.getString("kode_brng")+"' ORDER BY data_batch.tgl_kadaluarsa DESC LIMIT 1");
+                            String no_faktur = Sequel.cariIsi("SELECT data_batch.no_faktur FROM data_batch WHERE data_batch.kode_brng='"+rs.getString("kode_brng")+"' ORDER BY data_batch.tgl_kadaluarsa DESC LIMIT 1");
                             try{
                                 headers = new HttpHeaders();
                                 headers.setContentType(MediaType.APPLICATION_JSON);
@@ -2925,14 +2971,14 @@ public class frmUtama extends javax.swing.JFrame {
                                                 "\"reference\": \"Encounter/"+rs.getString("id_encounter")+"\"" +
                                             "}," +
                                             "\"occurrenceDateTime\": \""+rs.getString("tgl_perawatan")+"T"+rs.getString("jam")+"+07:00"+"\"," +
-                                            "\"expirationDate\": \""+Sequel.cariIsi("SELECT data_batch.tgl_kadaluarsa FROM data_batch WHERE data_batch.no_batch='"+rs.getString("no_batch")+"' and data_batch.kode_brng='"+rs.getString("kode_brng")+"' and data_batch.no_faktur='"+rs.getString("no_faktur")+"'")+"\"," +
+                                            "\"expirationDate\": \""+Sequel.cariIsi("SELECT data_batch.tgl_kadaluarsa FROM data_batch WHERE data_batch.no_batch='"+no_batch+"' and data_batch.kode_brng='"+rs.getString("kode_brng")+"' and data_batch.no_faktur='"+no_faktur+"'")+"\"," +
                                             "\"recorded\": \""+rs.getString("tgl_perawatan")+"T"+rs.getString("jam")+"+07:00"+"\"," +
                                             "\"primarySource\": true," +
                                             "\"location\": {" +
                                                 "\"reference\": \"Location/"+rs.getString("id_lokasi_satusehat")+"\"," +
                                                 "\"display\": \""+rs.getString("nm_poli")+"\"" +
                                             "}," +
-                                            "\"lotNumber\": \""+rs.getString("no_batch")+"\"," +
+                                            "\"lotNumber\": \""+no_batch+"\"," +
                                             "\"route\": {" +
                                                 "\"coding\": [" +
                                                     "{" +
@@ -2968,7 +3014,7 @@ public class frmUtama extends javax.swing.JFrame {
                                                 "{" +
                                                     "\"coding\": [" +
                                                         "{" +
-                                                            "\"system\": \"https://terminology.kemkes.go.id/CodeSystem/immunization-reason\"," +
+                                                            "\"system\": \"http://terminology.kemkes.go.id/CodeSystem/immunization-reason\"," +
                                                             "\"code\": \"IM-Program\"," +
                                                             "\"display\" : \"Imunisasi Program\"" +
                                                         "}" +
@@ -2977,7 +3023,7 @@ public class frmUtama extends javax.swing.JFrame {
                                             "]," +
                                             "\"protocolApplied\" : ["+
                                                 "{"+
-                                                    "\"doseNumberPositiveInt\" : "+rs.getString("aturan").replaceAll("[^0-9.]", "")+
+                                                    "\"doseNumberPositiveInt\" : 1"+
                                                 "}"+
                                             "]"+
                                         "}";
@@ -2990,7 +3036,7 @@ public class frmUtama extends javax.swing.JFrame {
                                 response = root.path("id");
                                 if(!response.asText().equals("")){
                                     Sequel.menyimpan2("satu_sehat_immunization","?,?,?,?,?,?,?","Imunisasi/Vaksin",7,new String[]{
-                                        rs.getString("no_rawat"),rs.getString("tgl_perawatan"),rs.getString("jam"),rs.getString("kode_brng"),rs.getString("no_batch"),rs.getString("no_faktur"),response.asText()
+                                        rs.getString("no_rawat"),rs.getString("tgl_perawatan"),rs.getString("jam"),rs.getString("kode_brng"),no_batch,no_faktur,response.asText()
                                     });
                                 }
                             }catch(Exception e){
