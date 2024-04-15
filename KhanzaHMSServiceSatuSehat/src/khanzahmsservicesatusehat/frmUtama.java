@@ -220,11 +220,12 @@ public class frmUtama extends javax.swing.JFrame {
 //                if((nilai_jam%4==0)&&(detik.equals("01")&&menit.equals("01"))){
 //                    encounter();
 //                    observationTTV();
-//                    vaksin();
+//                    saveBatchVaksin();
 //                    prosedur();
 //                    condition();
 //                    clinicalimpression();
 //                    dietgizi();
+//                    vaksin();
 //                    medicationrequest();
 //                    medicationdispense();
 //                    servicerequestradiologi();
@@ -243,10 +244,6 @@ public class frmUtama extends javax.swing.JFrame {
                 
                 if((jam.equals("22"))&&(detik.equals("01")&&menit.equals("55"))){
                     saveDiet();
-                }
-                 if((detik.equals("01")&&menit.equals("04"))){
-//                    saveBatchVaksin();
-                    vaksin();
                 }
             }
         };
@@ -308,11 +305,9 @@ public class frmUtama extends javax.swing.JFrame {
                                 else{
                                      System.out.println("GAGALS");
                                 }
-                            }
-//                             System.out.println(no_rawat+ ", " + kode_brng+ ", " + no_batch + ", " + no_faktur);
-                             
-                             System.out.println("Notifikasi : Data Imnunisasi Vaksin Tanggal: " + Tanggal1.getText() +" s/d "+ Tanggal2.getText() +" Berhasil Disimpan !");
-                             TeksArea.append("Notifikasi : Data Imnunisasi Vaksin Tanggal: " + Tanggal1.getText() +" s/d "+ Tanggal2.getText() +" Berhasil Disimpan ! \n");
+                            }                             
+//                             System.out.println("Notifikasi : Data Imnunisasi Vaksin Tanggal: " + Tanggal1.getText() +" s/d "+ Tanggal2.getText() +" Berhasil Disimpan !");
+//                             TeksArea.append("Notifikasi : Data Imnunisasi Vaksin Tanggal: " + Tanggal1.getText() +" s/d "+ Tanggal2.getText() +" Berhasil Disimpan ! \n");
                               
                         } catch (Exception e) {
                             System.out.println(e + "3");

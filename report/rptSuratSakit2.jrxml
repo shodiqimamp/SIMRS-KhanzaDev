@@ -114,12 +114,12 @@
 				<text><![CDATA[Nama]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="70" y="179" width="152" height="14" uuid="8c82f0e5-894b-452d-8239-c2ee743e914d"/>
+				<reportElement x="52" y="179" width="198" height="14" uuid="8c82f0e5-894b-452d-8239-c2ee743e914d"/>
 				<textElement>
 					<font fontName="Tahoma" size="10"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Yang bertanda tangan dibawah ini]]></text>
+				<text><![CDATA[Yang bertanda tangan dibawah ini Test]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="183" y="272" width="7" height="14" uuid="b5d90fc6-de26-42bc-927e-9cadf6be5443"/>
@@ -178,7 +178,7 @@
 				<text><![CDATA[Alamat]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="223" y="179" width="269" height="14" uuid="b8b312df-53a9-4cc6-8372-65b0098ba4e9"/>
+				<reportElement x="270" y="179" width="269" height="14" uuid="b8b312df-53a9-4cc6-8372-65b0098ba4e9"/>
 				<textElement>
 					<font fontName="Tahoma" size="10"/>
 					<paragraph lineSpacing="Single"/>
