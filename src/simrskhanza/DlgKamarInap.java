@@ -8592,10 +8592,10 @@ public class DlgKamarInap extends javax.swing.JDialog {
         }else{
             if(tbKamIn.getSelectedRow()>-1){
                 if(tbKamIn.getValueAt(tbKamIn.getSelectedRow(),0).toString().equals("")){
-                    if(Sequel.cariRegistrasi(tbKamIn.getValueAt(tbKamIn.getSelectedRow()-1,0).toString())>0){
-                        JOptionPane.showMessageDialog(rootPane,"Data billing sudah terverifikasi.\nSilahkan hubungi bagian kasir/keuangan ..!!");
-                        TCari.requestFocus();
-                    }else{
+//                    if(Sequel.cariRegistrasi(tbKamIn.getValueAt(tbKamIn.getSelectedRow()-1,0).toString())<0){
+//                        JOptionPane.showMessageDialog(rootPane,"Data billing sudah terverifikasi.\nSilahkan hubungi bagian kasir/keuangan..!!");
+//                        TCari.requestFocus();
+//                    }else{
                         try {
                             psanak=koneksi.prepareStatement(
                                 "select ranap_gabung.no_rawat2 from ranap_gabung where ranap_gabung.no_rawat=?");            
@@ -8638,12 +8638,12 @@ public class DlgKamarInap extends javax.swing.JDialog {
                         } catch (Exception e) {
                             System.out.println(e);
                         }
-                    }
+//                    }
                 }else{
-                    if(Sequel.cariRegistrasi(norawat.getText())>0){
-                        JOptionPane.showMessageDialog(rootPane,"Data billing sudah terverifikasi.\nSilahkan hubungi bagian kasir/keuangan ..!!");
-                        TCari.requestFocus();
-                    }else{
+//                    if(Sequel.cariRegistrasi(norawat.getText())>0){
+//                        JOptionPane.showMessageDialog(rootPane,"Data billing sudah terverifikasi.\nSilahkan hubungi bagian kasir/keuangan ..!!");
+//                        TCari.requestFocus();
+//                    }else{
                         akses.setform("DlgKamarInap");
                         bangsal=Sequel.cariIsi("select set_depo_ranap.kd_depo from set_depo_ranap where set_depo_ranap.kd_bangsal=?",Sequel.cariIsi("select kamar.kd_bangsal from kamar where kamar.kd_kamar=?",kdkamar.getText()));
                         if(bangsal.equals("")){
@@ -8662,7 +8662,7 @@ public class DlgKamarInap extends javax.swing.JDialog {
                         returjual.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
                         returjual.setLocationRelativeTo(internalFrame1);
                         returjual.setVisible(true);
-                    }
+//                    }
 
                 }
             }

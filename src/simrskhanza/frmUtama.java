@@ -627,6 +627,8 @@ import dapur.DapurRiwayatBarang;
 import grafikanalisa.GrafikKeslingLimbahB3CairBulan;
 import grafikanalisa.GrafikKeslingLimbahB3CairPertanggal;
 import inventaris.KeslingLimbahB3MedisCair;
+import inventory.DlgCariPiutangKary;
+import inventory.DlgPiutangKry;
 import ipsrs.IPSRSPengajuanBarangNonMedis;
 import ipsrs.DlgSirkulasiNonMedis2;
 import ipsrs.IPSRSHibah;
@@ -1638,6 +1640,8 @@ public class frmUtama extends javax.swing.JFrame {
         btnGrafikLimbahDomestikPerTanggal = new widget.ButtonBig();
         btnLaboratoriumPA = new widget.ButtonBig();
         btnLaboratoriumMB = new widget.ButtonBig();
+        btnPiutangKry = new widget.ButtonBig();
+        btnCariPiutangKary = new widget.ButtonBig();
         internalFrame1 = new widget.InternalFrame();
         BtnMenu = new widget.ButtonBig();
         jSeparator4 = new javax.swing.JSeparator();
@@ -1934,7 +1938,7 @@ public class frmUtama extends javax.swing.JFrame {
 
         tanggal.setEditable(false);
         tanggal.setForeground(new java.awt.Color(50, 70, 50));
-        tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "24/01/2024" }));
+        tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "23/04/2024" }));
         tanggal.setDisplayFormat("dd/MM/yyyy");
         tanggal.setName("tanggal"); // NOI18N
         tanggal.setOpaque(false);
@@ -6988,6 +6992,28 @@ public class frmUtama extends javax.swing.JFrame {
             }
         });
 
+        btnPiutangKry.setIcon(new javax.swing.ImageIcon(getClass().getResource("/48x48/teacher.png"))); // NOI18N
+        btnPiutangKry.setText("Piutang Obat Karyawan");
+        btnPiutangKry.setIconTextGap(0);
+        btnPiutangKry.setName("btnPiutangKry"); // NOI18N
+        btnPiutangKry.setPreferredSize(new java.awt.Dimension(200, 90));
+        btnPiutangKry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPiutangKryActionPerformed(evt);
+            }
+        });
+
+        btnCariPiutangKary.setIcon(new javax.swing.ImageIcon(getClass().getResource("/48x48/1485357524_Company.png"))); // NOI18N
+        btnCariPiutangKary.setText("Cari Piutang Obat Karyawan");
+        btnCariPiutangKary.setIconTextGap(0);
+        btnCariPiutangKary.setName("btnCariPiutangKary"); // NOI18N
+        btnCariPiutangKary.setPreferredSize(new java.awt.Dimension(200, 90));
+        btnCariPiutangKary.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCariPiutangKaryActionPerformed(evt);
+            }
+        });
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("::[ Khanza SIMKES 2022 ]::");
         setBackground(new java.awt.Color(255, 254, 254));
@@ -10964,12 +10990,16 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         FlayMenu.add(btnDataPenyerahanDarah);
         FlayMenu.add(btnDaftarPermintaanResep);
         FlayMenu.add(btnResepObatDepan);
+        FlayMenu.add(btnPiutangKry);
+        FlayMenu.add(btnCariPiutangKary);
         btnInputPenjualan.setEnabled(akses.getpenjualan_obat());
         btnDataPenjualan.setEnabled(akses.getpenjualan_obat());
         btnDataPenyerahanDarah.setEnabled(akses.getutd_penyerahan_darah());
         btnDaftarPermintaanResep.setEnabled(akses.getresep_dokter());
         btnResepObatDepan.setEnabled(akses.getresep_obat());
-        FlayMenu.setVisible(true);       
+        btnPiutangKry.setEnabled(akses.getresep_obat());
+        btnCariPiutangKary.setEnabled(akses.getresep_obat());
+        FlayMenu.setVisible(true);
     }//GEN-LAST:event_BtnToolJualObatActionPerformed
 
     private void PanelWallMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PanelWallMouseMoved
@@ -14504,6 +14534,36 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         Valid.panggilUrl("antrianmobilejkn.php");
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_MnInfoMobileJKNActionPerformed
+
+    private void btnPiutangKryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPiutangKryActionPerformed
+        // TODO add your handling code here:
+         isTutup();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        DlgPiutangKry piutangkry=new DlgPiutangKry(this,false);
+        
+        piutangkry.emptTeks();
+        piutangkry.isCek();
+        piutangkry.setPasien("00000", "Pasien Resep Bebas");
+        piutangkry.setSize(PanelUtama.getWidth(),PanelUtama.getHeight());
+        piutangkry.setLocationRelativeTo(PanelUtama);
+        piutangkry.setVisible(true);
+        DlgHome.dispose();
+        this.setCursor(Cursor.getDefaultCursor());
+    }//GEN-LAST:event_btnPiutangKryActionPerformed
+
+    private void btnCariPiutangKaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariPiutangKaryActionPerformed
+        // TODO add your handling code here:
+        isTutup();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        DlgCariPiutangKary caripiutangkry=new DlgCariPiutangKary(this,false);
+        caripiutangkry.emptTeks();
+        caripiutangkry.setSize(PanelUtama.getWidth(),PanelUtama.getHeight());
+        caripiutangkry.setLocationRelativeTo(PanelUtama);
+        caripiutangkry.setAlwaysOnTop(false);
+        caripiutangkry.setVisible(true);
+        DlgHome.dispose();
+        this.setCursor(Cursor.getDefaultCursor());
+    }//GEN-LAST:event_btnCariPiutangKaryActionPerformed
 
     private void btnKategoriPerpustakaanActionPerformed(java.awt.event.ActionEvent evt) {
         isTutup();
@@ -21289,6 +21349,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     private widget.ButtonBig btnBubes;
     private widget.ButtonBig btnBulananHAIs;
     private widget.ButtonBig btnCacatFisik;
+    private widget.ButtonBig btnCariPiutangKary;
     private widget.ButtonBig btnCashFlow;
     private widget.ButtonBig btnCatatanPasien;
     private widget.ButtonBig btnCekBPJSDiagnosa;
@@ -21553,6 +21614,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     private widget.ButtonBig btnPerusahaan;
     private widget.ButtonBig btnPiutang;
     private widget.ButtonBig btnPiutangBelumLunas;
+    private widget.ButtonBig btnPiutangKry;
     private widget.ButtonBig btnPiutangPerAkunPiutang;
     private widget.ButtonBig btnPiutangPerCaraBayar;
     private widget.ButtonBig btnPiutangRalan;

@@ -1335,7 +1335,7 @@ public class DlgBarang extends javax.swing.JDialog {
         karyawan.setBounds(630, 222, 110, 23);
 
         DTPExpired.setForeground(new java.awt.Color(50, 70, 50));
-        DTPExpired.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "11-05-2023" }));
+        DTPExpired.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "23-04-2024" }));
         DTPExpired.setDisplayFormat("dd-MM-yyyy");
         DTPExpired.setName("DTPExpired"); // NOI18N
         DTPExpired.setOpaque(false);
@@ -2403,9 +2403,9 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private widget.Button BtnAll;
+    public widget.Button BtnAll;
     private widget.Button BtnBatal;
-    private widget.Button BtnCari;
+    public widget.Button BtnCari;
     private widget.Button BtnEdit;
     private widget.Button BtnGolongan;
     private widget.Button BtnHapus;
@@ -2432,7 +2432,7 @@ private void KapasitasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     private widget.TextBox NmIF;
     private javax.swing.JPanel PanelInput;
     private javax.swing.JPopupMenu Popup;
-    private widget.TextBox TCari;
+    public widget.TextBox TCari;
     private widget.TextBox beli;
     private widget.TextBox beliluar;
     private widget.TextBox dasar;
