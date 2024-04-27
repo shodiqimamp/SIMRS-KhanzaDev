@@ -26,7 +26,9 @@
 	<parameter name="no_rawat" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT detreturjual.jml_retur, detreturjual.subtotal, databarang.nama_brng, detreturjual.h_retur, petugas.nama,
-			(SELECT sum(detreturjual.subtotal) AS total FROM detreturjual WHERE detreturjual.no_retur_jual=$P{no_retur}) AS total_harga
+			(SELECT sum(detreturjual.subtotal) AS total FROM detreturjual WHERE detreturjual.no_retur_jual=$P{no_retur}) AS total_harga,
+			IFNULL((SELECT km.kelas FROM kamar_inap ki INNER JOIN kamar km ON km.kd_kamar = ki.kd_kamar
+			WHERE ki.no_rawat = $P{no_rawat} AND ki.stts_pulang != "Pindah Kamar" LIMIT 1),'Rawat Jalan') AS kls
 			FROM detreturjual 
 			INNER JOIN databarang ON databarang.kode_brng = detreturjual.kode_brng
 			INNER JOIN returjual ON returjual.no_retur_jual = detreturjual.no_retur_jual
@@ -55,6 +57,10 @@
 	</field>
 	<field name="total_harga" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="total_harga"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="temporary_retur"/>
+	</field>
+	<field name="kls" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="kls"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="temporary_retur"/>
 	</field>
 	<background>
@@ -211,7 +217,7 @@
 				<textElement>
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{no_rawat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{no_rawat}+" ("+$F{kls}+") "]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="64" y="90" width="126" height="9" uuid="a4dd6735-384f-405f-a22a-a1b6ead62a69"/>
@@ -241,14 +247,14 @@
 				<text><![CDATA[No]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="128" width="66" height="14" uuid="5e51d99b-a05e-4028-bd0a-27d94951f1d1"/>
+				<reportElement x="30" y="128" width="80" height="14" uuid="5e51d99b-a05e-4028-bd0a-27d94951f1d1"/>
 				<textElement>
 					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nama Obat]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="110" y="128" width="38" height="14" uuid="178507dc-45c6-4ef3-a3c8-43d65faa26f5"/>
+				<reportElement x="126" y="128" width="31" height="14" uuid="178507dc-45c6-4ef3-a3c8-43d65faa26f5"/>
 				<textElement>
 					<font size="7" isBold="true"/>
 				</textElement>
@@ -276,7 +282,7 @@
 	<detail>
 		<band height="12" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" mode="Transparent" x="110" y="2" width="38" height="9" uuid="c2a8b40d-5988-41d8-bb50-f0add7aa1ce8"/>
+				<reportElement positionType="Float" mode="Transparent" x="126" y="2" width="31" height="9" uuid="c2a8b40d-5988-41d8-bb50-f0add7aa1ce8"/>
 				<textElement>
 					<font fontName="Tahoma" size="7"/>
 					<paragraph lineSpacing="Single"/>
@@ -289,8 +295,7 @@
 					<font fontName="Tahoma" size="7"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Rp. " + new java.text.DecimalFormat("#,###", new java.text.DecimalFormatSymbols(new Locale("id", "ID"))).format($F{h_retur})
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,###", new java.text.DecimalFormatSymbols(new Locale("id", "ID"))).format($F{h_retur})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement positionType="Float" mode="Transparent" x="230" y="2" width="47" height="9" uuid="668b5153-83c3-4f37-a21a-00cead9713f9"/>
@@ -298,8 +303,7 @@
 					<font fontName="Tahoma" size="7"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Rp. " + new java.text.DecimalFormat("#,###", new java.text.DecimalFormatSymbols(new Locale("id", "ID"))).format($F{subtotal})
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,###", new java.text.DecimalFormatSymbols(new Locale("id", "ID"))).format($F{subtotal})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement positionType="Float" mode="Transparent" x="2" y="2" width="20" height="9" uuid="8f497097-68dd-485e-98df-79f31d956283"/>
@@ -310,7 +314,7 @@
 				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" mode="Transparent" x="30" y="2" width="66" height="9" uuid="b94f7c44-3742-48d8-b751-bf008502fe96"/>
+				<reportElement positionType="Float" mode="Transparent" x="30" y="2" width="80" height="9" uuid="b94f7c44-3742-48d8-b751-bf008502fe96"/>
 				<textElement>
 					<font fontName="Tahoma" size="7"/>
 					<paragraph lineSpacing="Single"/>
@@ -325,7 +329,7 @@
 	<summary>
 		<band height="142" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="143" y="21" width="135" height="10" uuid="1e4fe592-4b55-426f-8a1c-626666ea68b4"/>
+				<reportElement mode="Transparent" x="143" y="24" width="135" height="10" uuid="1e4fe592-4b55-426f-8a1c-626666ea68b4"/>
 				<textElement textAlignment="Right">
 					<font fontName="Tahoma" size="7"/>
 					<paragraph lineSpacing="Single"/>
@@ -333,23 +337,23 @@
 				<textFieldExpression><![CDATA[$P{kotars}+", "+$P{tanggal}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="143" y="57" width="135" height="10" uuid="935dbf67-7d80-4d36-956f-837838304a00"/>
+				<reportElement x="143" y="60" width="135" height="10" uuid="935dbf67-7d80-4d36-956f-837838304a00"/>
 				<textElement textAlignment="Right">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="228" y="31" width="49" height="14" uuid="3c02af75-d2fc-474e-9b18-4b2ae700aceb"/>
+				<reportElement x="228" y="34" width="49" height="14" uuid="3c02af75-d2fc-474e-9b18-4b2ae700aceb"/>
 				<textElement textAlignment="Right">
 					<font size="7" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Petugas,]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="7" width="46" height="14" uuid="6e65f27a-d186-4839-b4c5-d6a60bda526b"/>
+				<reportElement x="1" y="8" width="46" height="14" uuid="6e65f27a-d186-4839-b4c5-d6a60bda526b"/>
 				<textElement textAlignment="Left">
-					<font size="7" isBold="true"/>
+					<font fontName="Tahoma" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total Retur :]]></text>
 			</staticText>
@@ -360,13 +364,12 @@
 				</graphicElement>
 			</line>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" mode="Transparent" x="120" y="6" width="157" height="15" uuid="a94ded34-de23-4f78-9c97-ae961240acbc"/>
+				<reportElement positionType="Float" mode="Transparent" x="120" y="7" width="157" height="15" uuid="a94ded34-de23-4f78-9c97-ae961240acbc"/>
 				<textElement textAlignment="Right">
 					<font fontName="Tahoma" size="8" isUnderline="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Rp. " + new java.text.DecimalFormat("#,###", new java.text.DecimalFormatSymbols(new Locale("id", "ID"))).format($F{total_harga})
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Rp. " + new java.text.DecimalFormat("#,###", new java.text.DecimalFormatSymbols(new Locale("id", "ID"))).format($F{total_harga})]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

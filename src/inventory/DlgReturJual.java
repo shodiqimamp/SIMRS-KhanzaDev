@@ -125,7 +125,7 @@ public class DlgReturJual extends javax.swing.JDialog {
             public void removeUpdate(DocumentEvent e) {isHitung();}
             @Override
             public void changedUpdate(DocumentEvent e) {isHitung();}
-        }); 
+        });
         
         
         form.barang.addWindowListener(new WindowListener() {
@@ -1434,7 +1434,31 @@ private void BtnGudangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     
     public void setPasien(String norm,String norawat){
         kdmem.setText(norm);
+        
         this.norawat=norawat;
+        
+        String status = Sequel.cariIsi("SELECT status_lanjut FROM reg_periksa WHERE no_rawat = ?", norawat);
+        String kelas = Sequel.cariIsi("SELECT km.kelas FROM kamar_inap ki INNER JOIN kamar km ON km.kd_kamar = ki.kd_kamar WHERE ki.no_rawat = ? AND ki.stts_pulang != 'Pindah Kamar' LIMIT 1", norawat);
+        
+        if(!kelas.equals("")){
+            if (kelas.contains("VIP") || kelas.contains("VVIP")) {
+                kelas = kelas.replace("Kelas ", ""); // Menghapus "Kelas " dari string kelas
+            }
+        } else{
+            kelas = "Rawat Jalan";
+        }
+        Jenisjual.setSelectedItem(kelas);    
+        
+        if(Sequel.cariRegistrasi(norawat)>0){
+          if(!status.equals("Ralan")){
+               String no_nota = Sequel.cariIsi("SELECT nota_inap.no_nota FROM nota_inap WHERE nota_inap.no_rawat = ?", norawat);
+               NoNota.setText(no_nota);               
+          } else{
+              String no_nota = Sequel.cariIsi("SELECT nota_jalan.no_nota FROM nota_jalan WHERE nota_jalan.no_rawat = ?", norawat);
+              NoNota.setText(no_nota);
+          }
+        }
+        
         Sequel.cariIsi("select pasien.nm_pasien from pasien where pasien.no_rkm_medis=?",nmmem,kdmem.getText());
         kdgudang.setText(akses.getkdbangsal());
         nmgudang.setText(bangsal.tampil3(kdgudang.getText())); 

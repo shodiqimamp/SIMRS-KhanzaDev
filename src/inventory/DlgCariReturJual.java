@@ -941,7 +941,12 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 no_rawat = no_retur.substring(0, 17);
             }
             
-            
+            String kelas = Sequel.cariIsi("SELECT km.kelas FROM kamar_inap ki INNER JOIN kamar km ON km.kd_kamar = ki.kd_kamar WHERE ki.no_rawat = ? AND ki.stts_pulang != 'Pindah Kamar' LIMIT 1", no_rawat);
+        
+            if(kelas.equals("")){
+                kelas = "Rawat Jalan";
+            }
+           
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             String formattedDate = now.format(formatter);
@@ -1165,19 +1170,9 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         if(tbRetur.getSelectedRow()!= -1){
             getno=1;
             NoRetur.setText(tbRetur.getValueAt(tbRetur.getSelectedRow(),0).toString()); 
-//            if(!NoRetur.getText().equals("")){
-//                Sequel.cariIsi("select resep_obat.no_rawat from resep_obat where resep_obat.no_resep=?",TNoRw,NoResep.getText());
-//                Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ",TNoRm,TNoRw.getText());
-//                Sequel.cariIsi("select pasien.nm_pasien from pasien where pasien.no_rkm_medis=? ",TPasien,TNoRm.getText());
-//                Sequel.cariIsi("select resep_obat.kd_dokter from resep_obat where resep_obat.no_resep=?",KdDokter,NoResep.getText());
-//                NmDokter.setText(dokter.tampil3(KdDokter.getText()));
-//                cmbJam.setSelectedItem(tbResep.getValueAt(tbResep.getSelectedRow(),1).toString().substring(11,13));
-//                cmbMnt.setSelectedItem(tbResep.getValueAt(tbResep.getSelectedRow(),1).toString().substring(14,16));
-//                cmbDtk.setSelectedItem(tbResep.getValueAt(tbResep.getSelectedRow(),1).toString().substring(17,19));
-//                Valid.SetTgl(DTPBeri,tbResep.getValueAt(tbResep.getSelectedRow(),1).toString().substring(0,10));  
-//                
-//                TabDataMouseClicked(null);
-//            }
+            Kdptg.setText(tbRetur.getValueAt(tbRetur.getSelectedRow(),2).toString().replaceAll("[^0-9]", ""));
+            Nmptg.setText(tbRetur.getValueAt(tbRetur.getSelectedRow(),2).toString().replaceAll("[0-9,]", "").trim());
+               
             getno=0;
         }
     }
