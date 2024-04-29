@@ -1170,8 +1170,8 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         if(tbRetur.getSelectedRow()!= -1){
             getno=1;
             NoRetur.setText(tbRetur.getValueAt(tbRetur.getSelectedRow(),0).toString()); 
-            Kdptg.setText(tbRetur.getValueAt(tbRetur.getSelectedRow(),2).toString().replaceAll("[^0-9]", ""));
-            Nmptg.setText(tbRetur.getValueAt(tbRetur.getSelectedRow(),2).toString().replaceAll("[0-9,]", "").trim());
+//            Kdptg.setText(tbRetur.getValueAt(tbRetur.getSelectedRow(),2).toString().replaceAll("[^0-9]", ""));
+//            Nmptg.setText(tbRetur.getValueAt(tbRetur.getSelectedRow(),2).toString().replaceAll("[0-9,]", "").trim());
                
             getno=0;
         }

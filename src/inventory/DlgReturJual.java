@@ -1443,6 +1443,8 @@ private void BtnGudangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         if(!kelas.equals("")){
             if (kelas.contains("VIP") || kelas.contains("VVIP")) {
                 kelas = kelas.replace("Kelas ", ""); // Menghapus "Kelas " dari string kelas
+            }else if(kelas.contains("Utama")){
+                kelas = "Utama/BPJS";
             }
         } else{
             kelas = "Rawat Jalan";
