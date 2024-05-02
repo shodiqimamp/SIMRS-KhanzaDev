@@ -217,7 +217,7 @@ public class frmUtama extends javax.swing.JFrame {
                     medication();
                 }
                 
-//                if((nilai_jam%4==0)&&(detik.equals("01")&&menit.equals("01"))){
+                if((nilai_jam%4==0)&&(detik.equals("01")&&menit.equals("01"))){
 //                    encounter();
 //                    observationTTV();
 //                    saveBatchVaksin();
@@ -226,8 +226,8 @@ public class frmUtama extends javax.swing.JFrame {
 //                    clinicalimpression();
 //                    dietgizi();
 //                    vaksin();
-//                    medicationrequest();
-//                    medicationdispense();
+                    medicationrequest();
+                    medicationdispense();
 //                    servicerequestradiologi();
 //                    specimenradiologi();
 //                    observationradiologi();
@@ -240,10 +240,11 @@ public class frmUtama extends javax.swing.JFrame {
 //                    observationlabmb();
 //                    diagnosticreportlabpk();
 //                    diagnosticreportlabmb();
-//                }
+                }
                 
                 if((jam.equals("22"))&&(detik.equals("01")&&menit.equals("55"))){
                     saveDiet();
+                    dietgizi();
                 }
             }
         };
