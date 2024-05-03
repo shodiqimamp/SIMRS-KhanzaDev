@@ -697,11 +697,14 @@ public class DlgCariReturJual extends javax.swing.JDialog {
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
         TCari.setText("");
+        NoRetur.setText("");
         NoNota.setText("");
         kdbar.setText("");
         nmbar.setText("");
         kdsat.setText("");
         nmsat.setText("");
+        Kdptg.setText("");
+        Nmptg.setText("");
         tampil();
     }//GEN-LAST:event_BtnAllActionPerformed
 
@@ -1170,8 +1173,8 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         if(tbRetur.getSelectedRow()!= -1){
             getno=1;
             NoRetur.setText(tbRetur.getValueAt(tbRetur.getSelectedRow(),0).toString()); 
-//            Kdptg.setText(tbRetur.getValueAt(tbRetur.getSelectedRow(),2).toString().replaceAll("[^0-9]", ""));
-//            Nmptg.setText(tbRetur.getValueAt(tbRetur.getSelectedRow(),2).toString().replaceAll("[0-9,]", "").trim());
+            Kdptg.setText(tbRetur.getValueAt(tbRetur.getSelectedRow(),2).toString().replaceAll("[^0-9]", ""));
+            Nmptg.setText(tbRetur.getValueAt(tbRetur.getSelectedRow(),2).toString().replaceAll("[0-9,]", "").trim());
                
             getno=0;
         }

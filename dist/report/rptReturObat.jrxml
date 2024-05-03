@@ -28,7 +28,13 @@
 		<![CDATA[SELECT detreturjual.jml_retur, detreturjual.subtotal, databarang.nama_brng, detreturjual.h_retur, petugas.nama,
 			(SELECT sum(detreturjual.subtotal) AS total FROM detreturjual WHERE detreturjual.no_retur_jual=$P{no_retur}) AS total_harga,
 			IFNULL((SELECT km.kelas FROM kamar_inap ki INNER JOIN kamar km ON km.kd_kamar = ki.kd_kamar
-			WHERE ki.no_rawat = $P{no_rawat} AND ki.stts_pulang != "Pindah Kamar" LIMIT 1),'Rawat Jalan') AS kls
+			WHERE ki.no_rawat = $P{no_rawat} AND ki.stts_pulang != "Pindah Kamar" LIMIT 1),'Rawat Jalan') AS kls,
+			(SELECT  CONCAT(ps.alamat, ", ",kl.nm_kel, ", ",kc.nm_kec,", ", kb.nm_kab) FROM reg_periksa rp
+				INNER JOIN pasien ps ON ps.no_rkm_medis = rp.no_rkm_medis
+				INNER JOIN kelurahan kl ON kl.kd_kel = ps.kd_kel
+				INNER JOIN kecamatan kc ON kc.kd_kec = ps.kd_kec
+				INNER JOIN kabupaten kb ON kb.kd_kab = ps.kd_kab
+				WHERE rp.no_rawat = $P{no_rawat}) as alamat
 			FROM detreturjual 
 			INNER JOIN databarang ON databarang.kode_brng = detreturjual.kode_brng
 			INNER JOIN returjual ON returjual.no_retur_jual = detreturjual.no_retur_jual
