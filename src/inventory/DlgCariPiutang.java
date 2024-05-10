@@ -411,7 +411,7 @@ public class DlgCariPiutang extends javax.swing.JDialog {
         ppResepObat.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         ppResepObat.setForeground(new java.awt.Color(50, 50, 50));
         ppResepObat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        ppResepObat.setText("Cetak Aturan Pakai Model 1");
+        ppResepObat.setText("Cetak Aturan Pakai Obat Kronis");
         ppResepObat.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         ppResepObat.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         ppResepObat.setName("ppResepObat"); // NOI18N
@@ -427,7 +427,7 @@ public class DlgCariPiutang extends javax.swing.JDialog {
         ppResepObat1.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         ppResepObat1.setForeground(new java.awt.Color(50, 50, 50));
         ppResepObat1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        ppResepObat1.setText("Cetak Aturan Pakai Model 2");
+        ppResepObat1.setText("Cetak Aturan Pakai Karyawan");
         ppResepObat1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         ppResepObat1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         ppResepObat1.setName("ppResepObat1"); // NOI18N
@@ -1223,12 +1223,13 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                     Valid.MyReportqry("rptItemResepPiutang.jasper","report","::[ Aturan Pakai Obat ]::",
                         "select piutang.nota_piutang,piutang.tgl_piutang, "+
                         "piutang.no_rkm_medis,piutang.nm_pasien,databarang.nama_brng,"+
-                        "detailpiutang.aturan_pakai,detailpiutang.jumlah,kodesatuan.satuan "+
+                        "detailpiutang.aturan_pakai,detailpiutang.jumlah,kodesatuan.satuan, now() as tgljam, pasien.tgl_lahir, pasien.jk, pasien.umur "+
                         "from piutang inner join detailpiutang on piutang.nota_piutang=detailpiutang.nota_piutang "+
                         "inner join databarang on detailpiutang.kode_brng=databarang.kode_brng "+
                         "inner join kodesatuan on databarang.kode_sat=kodesatuan.kode_sat "+
+                        "inner join pasien on pasien.no_rkm_medis=piutang.no_rkm_medis "+
                         "where piutang.nota_piutang='"+tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString().trim()+"' and detailpiutang.aturan_pakai<>''",param);
-                }  
+                }    
                 this.setCursor(Cursor.getDefaultCursor());
             }
         }
@@ -1254,12 +1255,12 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 param.put("emailrs",akses.getemailrs());
                 param.put("logo",Sequel.cariGambar("select setting.logo from setting"));
 
-                if(Sequel.cariInteger(
+                 if(Sequel.cariInteger(
                         "select count(*) from detailpiutang where nota_piutang=? and aturan_pakai<>''",tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString().trim())>0){
                     Valid.MyReportqry("rptItemResepPiutang2.jasper","report","::[ Aturan Pakai Obat ]::",
                         "select piutang.nota_piutang,piutang.tgl_piutang, "+
                         "piutang.no_rkm_medis,piutang.nm_pasien,databarang.nama_brng,"+
-                        "detailpiutang.aturan_pakai,detailpiutang.jumlah,kodesatuan.satuan,jenis.nama as jenis "+
+                        "detailpiutang.aturan_pakai,detailpiutang.jumlah,kodesatuan.satuan,jenis.nama as jenis,piutang.catatan,now() as tgljam "+
                         "from piutang inner join detailpiutang on piutang.nota_piutang=detailpiutang.nota_piutang "+
                         "inner join databarang on detailpiutang.kode_brng=databarang.kode_brng "+
                         "inner join kodesatuan on databarang.kode_sat=kodesatuan.kode_sat "+
@@ -1291,7 +1292,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 param.put("kontakrs",akses.getkontakrs());
                 param.put("emailrs",akses.getemailrs());
                 param.put("logo",Sequel.cariGambar("select setting.logo from setting"));
-                if(Sequel.cariInteger(
+                 if(Sequel.cariInteger(
                         "select count(*) from detailpiutang where nota_piutang=? and aturan_pakai<>''",tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString().trim())>0){
                     Valid.MyReportqry("rptItemResepPiutang3.jasper","report","::[ Aturan Pakai Obat ]::",
                         "select piutang.nota_piutang,piutang.tgl_piutang, "+
@@ -1301,7 +1302,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                         "inner join databarang on detailpiutang.kode_brng=databarang.kode_brng "+
                         "inner join kodesatuan on databarang.kode_sat=kodesatuan.kode_sat "+
                         "where piutang.nota_piutang='"+tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString().trim()+"' and detailpiutang.aturan_pakai<>''",param);
-                }  
+                }
 
                 this.setCursor(Cursor.getDefaultCursor());
             }
