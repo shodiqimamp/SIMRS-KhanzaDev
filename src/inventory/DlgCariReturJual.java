@@ -452,6 +452,7 @@ public class DlgCariReturJual extends javax.swing.JDialog {
         panelisi4.add(label24);
         label24.setBounds(0, 10, 70, 23);
 
+        kdsat.setEditable(false);
         kdsat.setName("kdsat"); // NOI18N
         kdsat.setPreferredSize(new java.awt.Dimension(80, 23));
         kdsat.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -491,6 +492,7 @@ public class DlgCariReturJual extends javax.swing.JDialog {
         panelisi4.add(label17);
         label17.setBounds(295, 10, 90, 23);
 
+        kdbar.setEditable(false);
         kdbar.setName("kdbar"); // NOI18N
         kdbar.setPreferredSize(new java.awt.Dimension(80, 23));
         kdbar.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -566,6 +568,7 @@ public class DlgCariReturJual extends javax.swing.JDialog {
         panelisijual.add(label13);
         label13.setBounds(320, 10, 55, 23);
 
+        Kdptg.setEditable(false);
         Kdptg.setName("Kdptg"); // NOI18N
         Kdptg.setPreferredSize(new java.awt.Dimension(80, 23));
         Kdptg.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -656,13 +659,9 @@ public class DlgCariReturJual extends javax.swing.JDialog {
     }//GEN-LAST:event_NoReturKeyPressed
 
     private void KdptgKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KdptgKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
-            Nmptg.setText(petugas.tampil3(Kdptg.getText()));        
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
-            Nmptg.setText(petugas.tampil3(Kdptg.getText()));
+        if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
             TglRetur1.requestFocus();
         }else if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            Nmptg.setText(petugas.tampil3(Kdptg.getText()));
             NoNota.requestFocus();   
         }else if(evt.getKeyCode()==KeyEvent.VK_UP){
             btnPetugasActionPerformed(null);
@@ -775,13 +774,9 @@ public class DlgCariReturJual extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnKeluarKeyPressed
 
     private void kdsatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdsatKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
-            Sequel.cariIsi("select kodesatuan.satuan from kodesatuan where kodesatuan.kode_sat=?", nmsat,kdsat.getText());
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
-            Sequel.cariIsi("select kodesatuan.satuan from kodesatuan where kodesatuan.kode_sat=?", nmsat,kdsat.getText());
+        if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
             Kdptg.requestFocus();
         }else if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            Sequel.cariIsi("select kodesatuan.satuan from kodesatuan where kodesatuan.kode_sat=?", nmsat,kdsat.getText());
             kdbar.requestFocus();
         }else if(evt.getKeyCode()==KeyEvent.VK_UP){
             btnSatuanActionPerformed(null);
@@ -803,13 +798,9 @@ public class DlgCariReturJual extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSatuanActionPerformed
 
     private void kdbarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdbarKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
-            Sequel.cariIsi("select nama_brng from databarang where kode_brng=?", nmbar,kdbar.getText());
-        }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
-            Sequel.cariIsi("select nama_brng from databarang where kode_brng=?", nmbar,kdbar.getText());
+        if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
             kdsat.requestFocus();
         }else if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            Sequel.cariIsi("select nama_brng from databarang where kode_brng=?", nmbar,kdbar.getText());
             TCari.requestFocus();
         }else if(evt.getKeyCode()==KeyEvent.VK_UP){
             btnBarangActionPerformed(null);
