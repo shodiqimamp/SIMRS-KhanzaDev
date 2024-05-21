@@ -1,0 +1,996 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="340" pageHeight="500" columnWidth="306" leftMargin="17" rightMargin="17" topMargin="17" bottomMargin="17" uuid="f71eddde-54e0-4c95-bb40-f4df24903e9d">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="143"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="33"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="956"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="koneksi"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<subDataset name="Empty Dataset1" uuid="a3032fac-723e-4cf3-aa5a-74ae17fd42b2"/>
+	<parameter name="penanggung" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="namars" class="java.lang.String"/>
+	<parameter name="alamatrs" class="java.lang.String"/>
+	<parameter name="kotars" class="java.lang.String"/>
+	<parameter name="propinsirs" class="java.lang.String"/>
+	<parameter name="kontakrs" class="java.lang.String"/>
+	<parameter name="emailrs" class="java.lang.String"/>
+	<parameter name="logo" class="java.io.InputStream"/>
+	<parameter name="tanggal" class="java.lang.String"/>
+	<parameter name="jam" class="java.lang.String"/>
+	<parameter name="norawat" class="java.lang.String"/>
+	<parameter name="pasien" class="java.lang.String"/>
+	<parameter name="norm" class="java.lang.String"/>
+	<parameter name="peresep" class="java.lang.String"/>
+	<parameter name="noresep" class="java.lang.String"/>
+	<parameter name="finger" class="java.lang.String"/>
+	<parameter name="alamatip" class="java.lang.String"/>
+	<parameter name="alamat" class="java.lang.String"/>
+	<parameter name="kelas" class="java.lang.String"/>
+	<parameter name="jk" class="java.lang.String"/>
+	<parameter name="no_urut" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select telaah_farmasi.no_resep,resep_obat.tgl_perawatan,resep_obat.jam,resep_obat.no_rawat,reg_periksa.no_rkm_medis,
+		pasien.nm_pasien,concat(reg_periksa.umurdaftar,' ',reg_periksa.sttsumur)as umur,pasien.jk,pasien.tgl_lahir,resep_obat.kd_dokter,dokter.nm_dokter,resep_obat.status,
+		telaah_farmasi.resep_identifikasi_pasien,telaah_farmasi.resep_ket_identifikasi_pasien,telaah_farmasi.resep_tepat_obat,
+		telaah_farmasi.resep_ket_tepat_obat,telaah_farmasi.resep_tepat_dosis,telaah_farmasi.resep_ket_tepat_dosis,
+		telaah_farmasi.resep_tepat_cara_pemberian,telaah_farmasi.resep_ket_tepat_cara_pemberian,telaah_farmasi.resep_tepat_waktu_pemberian,
+		telaah_farmasi.resep_ket_tepat_waktu_pemberian,telaah_farmasi.resep_ada_tidak_duplikasi_obat,telaah_farmasi.resep_ket_ada_tidak_duplikasi_obat,
+		telaah_farmasi.resep_interaksi_obat,telaah_farmasi.resep_ket_interaksi_obat,telaah_farmasi.resep_kontra_indikasi_obat,
+		telaah_farmasi.resep_ket_kontra_indikasi_obat,telaah_farmasi.obat_tepat_pasien,telaah_farmasi.obat_tepat_obat,
+		telaah_farmasi.obat_tepat_dosis,telaah_farmasi.obat_kesesuaian_formularium,telaah_farmasi.obat_tepat_waktu_pemberian,
+		telaah_farmasi.resep_kesesuaian_formularium, telaah_farmasi.resep_kesesuaian_formularium, telaah_farmasi.resep_ket_kesesuaian_formularium,
+		telaah_farmasi.nip,petugas.nama
+		from telaah_farmasi inner join resep_obat on telaah_farmasi.no_resep=resep_obat.no_resep
+		inner join reg_periksa on resep_obat.no_rawat=reg_periksa.no_rawat
+		inner join pasien on pasien.no_rkm_medis=reg_periksa.no_rkm_medis
+		inner join dokter on resep_obat.kd_dokter=dokter.kd_dokter
+		inner join petugas on telaah_farmasi.nip=petugas.nip
+		where resep_obat.no_resep = $P{noresep}]]>
+	</queryString>
+	<field name="resep_identifikasi_pasien" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="resep_identifikasi_pasien"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="resep_ket_identifikasi_pasien" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="resep_ket_identifikasi_pasien"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="resep_tepat_obat" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="resep_tepat_obat"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="resep_ket_tepat_obat" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="resep_ket_tepat_obat"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="resep_tepat_dosis" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="resep_tepat_dosis"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="resep_ket_tepat_dosis" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="resep_ket_tepat_dosis"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="resep_tepat_cara_pemberian" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="resep_tepat_cara_pemberian"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="resep_ket_tepat_cara_pemberian" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="resep_ket_tepat_cara_pemberian"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="resep_tepat_waktu_pemberian" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="resep_tepat_waktu_pemberian"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="resep_ket_tepat_waktu_pemberian" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="resep_ket_tepat_waktu_pemberian"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="resep_ada_tidak_duplikasi_obat" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="resep_ada_tidak_duplikasi_obat"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="resep_ket_ada_tidak_duplikasi_obat" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="resep_ket_ada_tidak_duplikasi_obat"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="resep_interaksi_obat" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="resep_interaksi_obat"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="resep_ket_interaksi_obat" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="resep_ket_interaksi_obat"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="resep_kontra_indikasi_obat" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="resep_kontra_indikasi_obat"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="resep_ket_kontra_indikasi_obat" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="resep_ket_kontra_indikasi_obat"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="resep_kesesuaian_formularium" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="resep_kesesuaian_formularium"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="resep_ket_kesesuaian_formularium" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="resep_ket_kesesuaian_formularium"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="obat_tepat_pasien" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="obat_tepat_pasien"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="obat_tepat_obat" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="obat_tepat_obat"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="obat_tepat_dosis" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="obat_tepat_dosis"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="obat_tepat_waktu_pemberian" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="obat_tepat_waktu_pemberian"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<field name="obat_kesesuaian_formularium" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="obat_kesesuaian_formularium"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="telaah_farmasi"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="122" splitType="Stretch">
+			<textField>
+				<reportElement x="48" y="14" width="229" height="14" uuid="31498202-9007-4a25-814a-401a5c13ac09"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="7"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{alamatrs}+", "+$P{kotars}+", "+$P{propinsirs}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="48" y="35" width="229" height="14" uuid="73e85403-89cd-40d2-8f5c-6399f58d2d25"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="7"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["E-mail : "+$P{emailrs}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="48" y="25" width="229" height="14" uuid="3be313cc-f94e-4637-b5fc-af2c58beb2db"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="7"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{kontakrs}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="48" y="0" width="229" height="17" uuid="d8be6aea-f634-4f94-9b05-67ac12748fa0"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{namars}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" onErrorType="Blank">
+				<reportElement x="15" y="2" width="48" height="45" uuid="40e08252-a127-4364-8425-09cfd759a35c"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="15" y="49" width="261" height="1" uuid="e6004156-b6ea-49d1-b94b-eaf94eb9b73f"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement mode="Transparent" x="13" y="54" width="57" height="14" uuid="bb3597b9-2024-41e3-b9cd-b6b4f03f6c03">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement markup="none">
+					<font fontName="Arial" size="9"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Nama Pasien]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="13" y="69" width="57" height="14" uuid="7a3b707b-7272-4809-adc1-7612e117b8f9"/>
+				<textElement markup="none">
+					<font fontName="Arial" size="9"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Jenis Pasien]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="13" y="84" width="57" height="14" uuid="ebfe2b64-7433-4c7a-866b-bcdc3b7535b7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement markup="none">
+					<font fontName="Arial" size="9"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Pemberi Resep]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="70" y="54" width="5" height="14" uuid="00b003c9-e4b5-4663-a686-87dacd8801da">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement markup="none">
+					<font fontName="Arial" size="9"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="70" y="84" width="5" height="14" uuid="5b276a1f-48c9-4fd6-bfb6-7c6b67b835b2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement markup="none">
+					<font fontName="Arial" size="9"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="70" y="69" width="5" height="14" uuid="bbf7b4a5-134c-49a6-be8b-f3a2f6d2a8b2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement markup="none">
+					<font fontName="Arial" size="9"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="75" y="54" width="201" height="14" uuid="be84caab-730f-4391-857b-47f8cf84d619">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pasien} + " / "+$P{norm}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="75" y="84" width="201" height="14" uuid="4e4d23b8-6b31-4387-8c5f-8041a5574d81">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{peresep}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="75" y="69" width="125" height="14" uuid="f6ee0495-0216-4caf-b2b1-6213867afa5b"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{penanggung} + " / " + ($P{kelas}.equals( "" ) ? "Rawat Jalan" : $P{kelas})]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="15" y="121" width="261" height="1" uuid="fb8170c0-f41d-4711-84b7-a201401a4a41"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="75" y="99" width="205" height="22" uuid="44cc280c-bbb5-46e4-910c-480e26a9056d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{alamat}.replaceAll( "KABUPATEN", "" )]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="70" y="99" width="5" height="14" uuid="96c339e1-58b8-41fd-af58-606766dc470b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement markup="none">
+					<font fontName="Arial" size="9"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="13" y="99" width="57" height="14" uuid="cb3c5f2a-57ad-4046-a08c-83098255e2cc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement markup="none">
+					<font fontName="Arial" size="9"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Alamat]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="200" y="69" width="76" height="14" uuid="c2e530df-08f9-4997-9e48-9d9fe4ff54a1"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["JK: " + ($P{jk}.equals("L") ? "Laki-Laki" : "Perempuan")]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="251">
+			<staticText>
+				<reportElement mode="Opaque" x="21" y="51" width="20" height="15" backcolor="#FFFFFF" uuid="8e87e455-8236-4fa0-89de-8cc3881b79a3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="41" y="51" width="117" height="15" backcolor="#FFFFFF" uuid="dd2c51d1-f9f2-4c8c-9695-d0ef788b1a0f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ Benar pasien]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="158" y="51" width="25" height="15" backcolor="#FFFFFF" uuid="d0123e77-d754-4628-965c-f303816c29c6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Dialog" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{resep_identifikasi_pasien}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="183" y="51" width="25" height="15" backcolor="#FFFFFF" uuid="ab96af07-407e-4ea6-b6a0-f8a0e8933b44">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{obat_tepat_pasien}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement positionType="Float" mode="Opaque" x="208" y="51" width="50" height="15" backcolor="#FFFFFF" uuid="02f36344-64ed-49af-a9c3-ca93a22ac4e7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" "+$F{resep_ket_identifikasi_pasien} + "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="21" y="21" width="20" height="30" backcolor="#FFFFFF" uuid="dcf08dd5-6fb9-409e-b81d-61d6fb70fd65"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="41" y="21" width="117" height="30" backcolor="#FFFFFF" uuid="5518abd3-66d7-4614-8b36-a9f930f5c43c"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Aspek Telaah]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="158" y="21" width="25" height="30" backcolor="#FFFFFF" uuid="80b9df4a-f248-4a28-a702-5fc4ea7df418"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Resep]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="208" y="21" width="50" height="30" backcolor="#FFFFFF" uuid="e94721b4-9067-4fbe-82a3-581ed3034981"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tindak Lanjut]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="21" y="66" width="20" height="15" backcolor="#FFFFFF" uuid="e2740347-3d64-4830-8677-a9ca71735050">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="41" y="66" width="117" height="15" backcolor="#FFFFFF" uuid="f433f145-1778-44c6-864e-c7b032b6c6fa">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ Benar nama obat]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="158" y="66" width="25" height="15" backcolor="#FFFFFF" uuid="7d2f1332-5812-48ac-937c-2682f0b6527b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Dialog" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{resep_tepat_obat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="183" y="66" width="25" height="15" backcolor="#FFFFFF" uuid="9056781f-8359-46ec-8bcb-6aa929f52715">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{obat_tepat_obat}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Opaque" x="208" y="66" width="50" height="15" backcolor="#FFFFFF" uuid="e1168444-4f4d-4a1d-9bc5-adf482122a5c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" "+$F{resep_ket_tepat_obat}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="21" y="81" width="20" height="15" backcolor="#FFFFFF" uuid="1beb260b-221a-4b0e-810d-64cf5bd8f2d0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="41" y="81" width="117" height="15" backcolor="#FFFFFF" uuid="8ab89d80-a39d-48fd-8411-90d59470e1dd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ Benar dosis]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="158" y="81" width="25" height="15" backcolor="#FFFFFF" uuid="e0b65384-0b2e-4cc7-9300-676b51b3fd09">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Dialog" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{resep_tepat_dosis}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="183" y="81" width="25" height="15" backcolor="#FFFFFF" uuid="903a4cb0-9efd-449a-a758-74a08a5ce0f2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{obat_tepat_dosis}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Opaque" x="208" y="81" width="50" height="15" backcolor="#FFFFFF" uuid="194b6b96-3ad0-49a4-b224-a3498934306d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" "+$F{resep_ket_tepat_dosis}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="21" y="96" width="20" height="15" backcolor="#FFFFFF" uuid="d0f510ac-1ffe-4b8a-be49-ff3ef1cbecbb">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[4]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="41" y="96" width="117" height="15" backcolor="#FFFFFF" uuid="cb855562-2316-46b4-87e0-77fd07f2c229">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ Benar waktu dan frekuensi]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="158" y="96" width="25" height="15" backcolor="#FFFFFF" uuid="5c308da9-a974-42e4-a625-26eecf09f28a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Dialog" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{resep_tepat_waktu_pemberian}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="183" y="96" width="25" height="15" backcolor="#FFFFFF" uuid="c41d0fc9-91b5-4a80-8450-1882c8abf24d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{obat_tepat_waktu_pemberian}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Opaque" x="208" y="96" width="50" height="15" backcolor="#FFFFFF" uuid="d519c207-c9da-42ef-8136-2d4e9da485ea">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" "+$F{resep_ket_tepat_waktu_pemberian}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="21" y="111" width="20" height="15" backcolor="#FFFFFF" uuid="dfdff296-dbd2-481d-bcf2-d709fb4377f6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[5]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="41" y="111" width="117" height="15" backcolor="#FFFFFF" uuid="fe5c4d61-6556-469f-8460-67313117686a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ Benar rute dan cara pemberian]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="158" y="111" width="25" height="15" backcolor="#FFFFFF" uuid="e7f4cef3-44db-4265-9b5d-d7d8d52a7ef6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Dialog" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{resep_tepat_cara_pemberian}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="183" y="111" width="25" height="15" backcolor="#424242" uuid="1102ea60-764c-46c2-9118-1622cf4d3e88">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Opaque" x="208" y="111" width="50" height="15" backcolor="#FFFFFF" uuid="be43eed8-df2f-408a-b42e-b92319446f03">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" "+$F{resep_ket_tepat_cara_pemberian}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="21" y="126" width="20" height="15" backcolor="#FFFFFF" uuid="7308c418-6787-4cd8-9740-8b0086c471f5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[6]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="41" y="126" width="117" height="15" backcolor="#FFFFFF" uuid="b12c082f-f9ab-4657-bbf6-e07465a9ab53">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ Alergi Obat]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="158" y="126" width="25" height="15" backcolor="#FFFFFF" uuid="9fb3eed7-98e8-4b1d-b6fb-9af75c2be31f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Dialog" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{resep_kontra_indikasi_obat}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="183" y="126" width="25" height="15" backcolor="#424242" uuid="b8c8350f-51d6-456a-ac06-1675faa553fa">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Opaque" x="208" y="126" width="50" height="15" backcolor="#FFFFFF" uuid="4aa701e2-7583-44ec-8407-3174258f1582">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" "+$F{resep_ket_kontra_indikasi_obat}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="21" y="141" width="20" height="15" backcolor="#FFFFFF" uuid="eaa48636-2c90-4197-a8f6-10a78f6ba66c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[7]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="41" y="141" width="117" height="15" backcolor="#FFFFFF" uuid="2b7f87a6-1fda-4eab-8436-addaf11b7491">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ Duplikasi Obat]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="158" y="141" width="25" height="15" backcolor="#FFFFFF" uuid="d4854547-b182-4d6f-a355-0371f47b3aa6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Dialog" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{resep_ada_tidak_duplikasi_obat}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="183" y="141" width="25" height="15" backcolor="#424242" uuid="5ad4429b-c2d0-40a5-ba59-5e534b16403c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Opaque" x="208" y="141" width="50" height="15" backcolor="#FFFFFF" uuid="04df2cad-411c-41e5-9a30-8191f71a4e13">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" "+$F{resep_ket_ada_tidak_duplikasi_obat}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="21" y="156" width="20" height="15" backcolor="#FFFFFF" uuid="ab4db9b1-3b7c-4501-b3c9-8712a67a8bcc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[8]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="41" y="156" width="117" height="15" backcolor="#FFFFFF" uuid="e435e5a2-6d89-45c9-bf91-26b97b611e60">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ Interaksi Obat]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="158" y="156" width="25" height="15" backcolor="#FFFFFF" uuid="045f7ba2-5aa4-4a15-a58f-eadaa43adf9e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Dialog" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{resep_interaksi_obat}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="183" y="156" width="25" height="15" backcolor="#424242" uuid="ca7c2601-1ebd-4bb0-af9d-5c32e039312c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Opaque" x="208" y="156" width="50" height="15" backcolor="#FFFFFF" uuid="4a977a75-2f1d-4f1f-8146-acfa1a4717d8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" "+$F{resep_ket_interaksi_obat}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="21" y="171" width="20" height="15" backcolor="#FFFFFF" uuid="ff35bfec-d85d-472e-a9b3-8933aa5a30f0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[9]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="41" y="171" width="117" height="15" backcolor="#FFFFFF" uuid="73a1ac4c-dcda-4209-be85-4b1f7f948178">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ Kesesuaian Formularium]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="158" y="171" width="25" height="15" backcolor="#FFFFFF" uuid="5edadbda-e9cd-4b28-9a65-de45ce86d83e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Dialog" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{resep_kesesuaian_formularium}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="183" y="171" width="25" height="15" backcolor="#FFFFFF" uuid="34bd4202-437d-42cf-94c3-55b8c9e288b1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{obat_kesesuaian_formularium}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement mode="Opaque" x="208" y="171" width="50" height="15" backcolor="#FFFFFF" uuid="6c8b22ae-375c-4427-a55c-cc7236863573">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" "+$F{resep_ket_kesesuaian_formularium}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="183" y="21" width="25" height="30" backcolor="#FFFFFF" uuid="130befdb-d0da-4a35-bdf1-71454f1f680d"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Obat]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="112" y="4" width="67" height="16" uuid="66ad97fb-1ecb-463c-8da7-dbb081450665"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Telaah Resep]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="21" y="192" width="54" height="12" uuid="7a1f3661-44ee-45e6-8582-62e02f3f8260">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Keterangan:
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="21" y="204" width="60" height="12" uuid="b571e229-cb39-4836-913d-4d5be1f287e3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[a. Telaah resep]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="204" width="5" height="12" uuid="6b222ca0-8432-4608-bf2e-9898a78124cc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="86" y="204" width="172" height="12" uuid="f44068fd-977f-497d-a470-502889ebab07">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Menelaah resep/order dokter]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="21" y="216" width="60" height="12" uuid="10ca4aaa-78f1-4356-99e9-fd943475e647">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[b. Telaah obat]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="216" width="5" height="12" uuid="d18db2b7-9128-4eb6-b8b6-d9437832fe22">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="86" y="216" width="172" height="26" uuid="28a18602-1e57-4a31-9dbc-89d32402d033">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Menelaah/memeriksa kesesuaian obat dan etiket yang disiapkan terhadap resep]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>
