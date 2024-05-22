@@ -3593,8 +3593,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                     TCari.requestFocus();
                 }else if(NoResep.equals("")){
                     JOptionPane.showMessageDialog(null,"Maaf, Silahkan pilih data pasien yang mau dicetak resep..!!");
-                }else if("No".equals(cekValidasi(NoResep))){
-                    JOptionPane.showMessageDialog(null,"Maaf, Silahkan lakukan validasi resep terlebih dahulu..!!");
+                }else if("No".equals(cekTelaah(NoResep))){
+                    JOptionPane.showMessageDialog(rootPane,"Resep belum ditelaah, silahkan lakukan telaah resep terlebih dahulu ..!!");
                 }else{
                     this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                                      
@@ -3659,8 +3659,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                     TCari.requestFocus();
                 }else if(NoResep.equals("")){
                     JOptionPane.showMessageDialog(null,"Maaf, Silahkan pilih data pasien yang mau dicetak resep..!!");
-                }else if("No".equals(cekValidasi(NoResep))){
-                    JOptionPane.showMessageDialog(null,"Maaf, Silahkan lakukan validasi resep terlebih dahulu..!!");
+                }else if("No".equals(cekTelaah(NoResep))){
+                    JOptionPane.showMessageDialog(rootPane,"Resep belum ditelaah, silahkan lakukan telaah resep terlebih dahulu ..!!");
                 }else{
                     this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                     
