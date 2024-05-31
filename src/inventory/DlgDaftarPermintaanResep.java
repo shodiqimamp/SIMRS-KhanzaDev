@@ -3552,7 +3552,19 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                         JOptionPane.showMessageDialog(null,"Maaf, Silahkan pilih data resep dokter yang mau ditelaah..!!");
                     }else{
                         if ("Yes".equals(cekTelaah(NoResep))) {
-                            JOptionPane.showMessageDialog(rootPane, "Resep sudah ditelaah ..!!");
+                            int reply = JOptionPane.showConfirmDialog(rootPane,"Resep sudah ditelaah, apakah anda ingin melanjutkan ?","Konfirmasi",JOptionPane.YES_NO_OPTION);
+                                if (reply == JOptionPane.YES_OPTION) {
+                                    this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                                    InventoryTelaahResep aplikasi = new InventoryTelaahResep(null, false);
+                                    aplikasi.emptTeks();
+                                    aplikasi.isCek();
+                                    aplikasi.setNoRm(NoResep, NoRawat, DTPCari2.getDate());
+                                    aplikasi.tampil();
+                                    aplikasi.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
+                                    aplikasi.setLocationRelativeTo(internalFrame1);
+                                    aplikasi.setVisible(true);
+                                    this.setCursor(Cursor.getDefaultCursor());
+                                }
                         }else {
                             if (Sequel.cariRegistrasi(NoRawat) > 0) {
                                 JOptionPane.showMessageDialog(rootPane, "Data billing sudah terverifikasi ..!!");
