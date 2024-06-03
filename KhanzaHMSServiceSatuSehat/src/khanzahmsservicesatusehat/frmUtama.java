@@ -242,11 +242,15 @@ public class frmUtama extends javax.swing.JFrame {
 //                    observationlabmb();
 //                    diagnosticreportlabpk();
 //                    diagnosticreportlabmb();
+                    savePemeriksaanRalan();
                 }
                 
                 if((jam.equals("22"))&&(detik.equals("01")&&menit.equals("55"))){
                     saveDiet();
                     dietgizi();
+                }
+                if(detik.equals("01")){
+                    savePemeriksaanRalan();
                 }
             }
         };
@@ -254,190 +258,100 @@ public class frmUtama extends javax.swing.JFrame {
         new Timer(1000, taskPerformer).start();
     }
     
-    private void updatePulangSEP() {
-        //kirim encounter
-        try{
-            ps=koneksi.prepareStatement(
-                   "SELECT reg_periksa.no_rawat, pasien.nm_pasien, bridging_sep.no_sep, kamar_inap.stts_pulang, billing.tgl_byr " +
-                    "FROM reg_periksa INNER JOIN pasien ON pasien.no_rkm_medis = reg_periksa.no_rkm_medis " +
-                    "INNER JOIN bridging_sep ON bridging_sep.no_rawat = reg_periksa.no_rawat " +
-                    "INNER JOIN kamar_inap ON kamar_inap.no_rawat = reg_periksa.no_rawat " +
-                    "LEFT JOIN billing ON billing.no_rawat = reg_periksa.no_rawat " +
-                    "WHERE billing.tgl_byr BETWEEN ? AND ? " +
-                    "AND kamar_inap.stts_pulang <> 'Pindah Kamar' GROUP BY billing.no_rawat");
-            try {
-                ps.setString(1,Tanggal1.getText());
-                ps.setString(2,Tanggal2.getText());
-                rs=ps.executeQuery();
-                while(rs.next()){
-                            try{
-                               headers = new HttpHeaders();
-                                headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-                                headers.add("X-Cons-ID",koneksiDB.CONSIDAPIBPJS());
-                                utc=String.valueOf(api.GetUTCdatetimeAsString());
-                                headers.add("X-Timestamp",utc);
-                                headers.add("X-Signature",api.getHmac(utc));
-                                headers.add("user_key",koneksiDB.USERKEYAPIBPJS());
-                                URL = link2+"/SEP/2.0/updtglplg";
-                                json = "{" +
-                                  "\"request\":" +
-                                     "{" +
-                                        "\"t_sep\":" +
-                                           "{" +
-                                            "\"noSep\":\""+rs.getString("no_sep")+"\"," +
-                                            "\"statusPulang\":\""+rs.getString("stts_pulang")+"\"," +
-                                            "\"noSuratMeninggal\":\""+(NoSuratKematian.getText().equals("")?"":NoSuratKematian.getText())+"\"," +
-                                            "\"tglMeninggal\":\""+(TanggalKematian.isEnabled()==false?"":Valid.SetTgl(TanggalKematian.getSelectedItem()+""))+"\"," +
-                                            "\"tglPulang\":\""+rs.getString("tgl_byr")+"\"," +
-                                            "\"noLPManual\":\""+(NoLPManual.getText().equals("")?"":NoLPManual.getText())+"\"," +
-                                            "\"user\":\""+user+"\"" +                                            
-                                           "}" +
-                                     "}" +
-                                 "}";
-                                System.out.println("JSON : "+json);
-                                requestEntity = new HttpEntity(json,headers);
-                                root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.PUT, requestEntity, String.class).getBody());
-                                nameNode = root.path("metaData");
-                                System.out.println("code : "+nameNode.path("code").asText());
-                                System.out.println("message : "+nameNode.path("message").asText());
-                                if(nameNode.path("code").asText().equals("200")){
-                                    Sequel.mengedit("bridging_sep","no_sep=?","tglpulang=?",2,new String[]{                             
-                                         Valid.SetTgl(TanggalPulang.getSelectedItem()+"")+" "+TanggalPulang.getSelectedItem().toString().substring(11,19),
-                                         tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(),0).toString()
-                                    });
-                                }
-                            }catch(Exception ea){
-                                System.out.println("Notifikasi Bridging : "+ea);
-                            }
+    
+    private String cekPemeriksaanRalan(String no_rawat, String kd_dokter){
+        String hasil = "";
+         try{
+                ps2=koneksi.prepareStatement(
+                    "SELECT * FROM pemeriksaan_ralan WHERE no_rawat = ? AND nip = ?"
+                );
+                try{
+                    ps2.setString(1,no_rawat+" ");
+                    ps2.setString(2,kd_dokter+" ");
+                    rs2=ps2.executeQuery();
+                    if(rs2.next()){
+                        hasil = "yes";
+                    }else{
+                        hasil = "no";
+                    }
+                    
                 }
-            } catch (Exception ex) {
-                System.out.println("Notif : "+ex);
-            } finally{
-                if(rs!=null){
-                    rs.close();
+                catch(Exception e){
+                    System.out.println("Notifikasi : "+e);
                 }
-                if(ps!=null){
-                    ps.close();
-                }
+
+               
             }
-            
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,pasien.nm_pasien,pasien.no_ktp,"+
-                   "pegawai.nama,pegawai.no_ktp as ktpdokter,poliklinik.nm_poli,satu_sehat_mapping_lokasi_ralan.id_lokasi_satusehat,"+
-                   "reg_periksa.status_lanjut,concat(nota_inap.tanggal,'T',nota_inap.jam,'+07:00') as pulang,ifnull(satu_sehat_encounter.id_encounter,'') as id_encounter "+
-                   "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join pegawai on pegawai.nik=reg_periksa.kd_dokter "+
-                   "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli inner join satu_sehat_mapping_lokasi_ralan on satu_sehat_mapping_lokasi_ralan.kd_poli=poliklinik.kd_poli "+
-                   "inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat left join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat "+
-                   "where nota_inap.tanggal between ? and ?");
-            try {
-                ps.setString(1,Tanggal1.getText());
-                ps.setString(2,Tanggal2.getText());
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    if((!rs.getString("no_ktp").equals(""))&&(!rs.getString("ktpdokter").equals(""))&&rs.getString("id_encounter").equals("")){
-                        try {
-                            iddokter=cekViaSatuSehat.tampilIDParktisi(rs.getString("ktpdokter"));
-                            idpasien=cekViaSatuSehat.tampilIDPasien(rs.getString("no_ktp"));
+            catch(Exception e){
+                System.out.println("Notifikasi : "+e);
+            }
+         
+         return hasil;
+    }
+    
+    private void savePemeriksaanRalan(){
+            try{
+                ps=koneksi.prepareStatement(
+                    "SELECT pmi.no_rawat, pmi.tanggal, pmi.rps, pmi.keadaan, pmi.gcs, pmi.tb, pmi.td, pmi.nadi, pmi.rr, pmi.suhu, pmi.spo, pmi.bb, pmi.ket_fisik, pmi.ket_lokalis, " +
+                    "pmi.alergi, pmi.anamnesis, pmi.kesadaran, pmi.kd_dokter " +
+                    "FROM penilaian_medis_igd pmi WHERE pmi.tanggal BETWEEN ? AND ?"
+                );
+                try{
+                    ps.setString(1,Tanggal1.getText()+" 00:00:00 ");
+                    ps.setString(2,Tanggal2.getText()+" 23:59:00 ");
+                    rs=ps.executeQuery();
+                    while(rs.next()){
+                        if("no".equals(cekPemeriksaanRalan(rs.getString("no_rawat"), rs.getString("kd_dokter")))){
                             try{
-                                headers = new HttpHeaders();
-                                headers.setContentType(MediaType.APPLICATION_JSON);
-                                headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                                json = "{" +
-                                            "\"resourceType\": \"Encounter\"," +
-                                            "\"status\": \"arrived\"," +
-                                            "\"class\": {" +
-                                                "\"system\": \"http://terminology.hl7.org/CodeSystem/v3-ActCode\"," +
-                                                "\"code\": \""+(rs.getString("status_lanjut").equals("Ralan")?"AMB":"IMP")+"\"," +
-                                                "\"display\": \""+(rs.getString("status_lanjut").equals("Ralan")?"ambulatory":"inpatient encounter")+"\"" +
-                                            "}," +
-                                            "\"subject\": {" +
-                                                "\"reference\": \"Patient/"+idpasien+"\"," +
-                                                "\"display\": \""+rs.getString("nm_pasien")+"\"" +
-                                            "}," +
-                                            "\"participant\": [" +
-                                                "{" +
-                                                    "\"type\": [" +
-                                                        "{" +
-                                                            "\"coding\": [" +
-                                                                "{" +
-                                                                    "\"system\": \"http://terminology.hl7.org/CodeSystem/v3-ParticipationType\"," +
-                                                                    "\"code\": \"ATND\"," +
-                                                                    "\"display\": \"attender\"" +
-                                                                "}" +
-                                                            "]" +
-                                                        "}" +
-                                                    "]," +
-                                                    "\"individual\": {" +
-                                                        "\"reference\": \"Practitioner/"+iddokter+"\"," +
-                                                        "\"display\": \""+rs.getString("nama")+"\"" +
-                                                    "}" +
-                                                "}" +
-                                            "]," +
-                                            "\"period\": {" +
-                                                "\"start\": \""+rs.getString("tgl_registrasi")+"T"+rs.getString("jam_reg")+"+07:00"+"\"" +
-                                            "}," +
-                                            "\"location\": [" +
-                                                "{" +
-                                                    "\"location\": {" +
-                                                        "\"reference\": \"Location/"+rs.getString("id_lokasi_satusehat")+"\"," +
-                                                        "\"display\": \""+rs.getString("nm_poli")+"\"" +
-                                                    "}" +
-                                                "}" +
-                                            "]," +
-                                            "\"statusHistory\": [" +
-                                                "{" +
-                                                    "\"status\": \"arrived\"," +
-                                                    "\"period\": {" +
-                                                        "\"start\": \""+rs.getString("tgl_registrasi")+"T"+rs.getString("jam_reg")+"+07:00"+"\"," +
-                                                        "\"end\": \""+rs.getString("pulang")+"\"" +
-                                                    "}" +
-                                                "}" +
-                                            "]," +
-                                            "\"serviceProvider\": {" +
-                                                "\"reference\": \"Organization/"+koneksiDB.IDSATUSEHAT()+"\"" +
-                                            "}," +
-                                            "\"identifier\": [" +
-                                                "{" +
-                                                    "\"system\": \"http://sys-ids.kemkes.go.id/encounter/"+koneksiDB.IDSATUSEHAT()+"\"," +
-                                                    "\"value\": \""+rs.getString("no_rawat")+"\"" +
-                                                "}" +
-                                            "]" +
-                                        "}";
-                                TeksArea.append("URL : "+link+"/Encounter\n");
-                                TeksArea.append("Request JSON : "+json+"\n");
-                                requestEntity = new HttpEntity(json,headers);
-                                json=api.getRest().exchange(link+"/Encounter", HttpMethod.POST, requestEntity, String.class).getBody();
-                                TeksArea.append("Result JSON : "+json+"\n");
-                                root = mapper.readTree(json);
-                                response = root.path("id");
-                                if(!response.asText().equals("")){
-                                    Sequel.menyimpan2("satu_sehat_encounter","?,?","No.Rawat",2,new String[]{
-                                        rs.getString("no_rawat"),response.asText()
-                                    });
-                                }
-                            }catch(Exception ea){
-                                System.out.println("Notifikasi Bridging : "+ea);
-                            }
-                        } catch (Exception ef) {
-                            System.out.println("Notifikasi : "+ef);
+                               String rps = rs.getString("rps");
+                               String no_rawat = rs.getString("no_rawat");
+                               String tgl = rs.getString("tanggal");
+                               String[] parts = tgl.split(" ");
+                               String tgl_rawat = parts[0];
+                               String jam_rawat = parts[1];
+
+                               String keadaan = rs.getString("keadaan").toLowerCase();
+                               String gcs = rs.getString("gcs");
+                               String tb = rs.getString("tb");
+                               String td = rs.getString("td");
+                               String nadi = rs.getString("nadi");
+                               String rr = rs.getString("rr");
+                               String suhu = rs.getString("suhu");
+                               String spo = rs.getString("spo");
+                               String bb = rs.getString("bb");
+                               String ket_fisik = rs.getString("ket_fisik");
+                               String ket_lokalis = rs.getString("ket_lokalis");
+                               String alergi = rs.getString("alergi");
+                               String kesadaran = rs.getString("kesadaran");
+                               String kd_dokter = rs.getString("kd_dokter");
+
+                               String keluhan="Pasien mengatakan " + rps;
+                               String pemeriksaan= ket_fisik +", "+ ket_lokalis+", TENSI : "+ td +", SUHU : "+  suhu+", NADI : "+  nadi +", GCS : "+  gcs +", TB : "+  tb +
+                                                   ", BB : "+  bb +", spo : "+  spo +", RESPIRASI : "+  rr;
+//                               System.out.println(no_rawat + ", " +kd_dokter + ", " + tgl_rawat+ ", " + jam_rawat+ ", " + keluhan+ ", " + pemeriksaan);
+                               Sequel.menyimpantf("pemeriksaan_ralan","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?","Data",21,new String[]{
+                                   no_rawat, tgl_rawat, jam_rawat, suhu, td, nadi, rr, tb, bb, spo, gcs, kesadaran, rps, pemeriksaan, alergi, "-", "-", "-", "-", "-", kd_dokter
+                               });
+                               
+                                System.out.println("Notifikasi : Data Penilian Medis IGD Tanggal: " + Tanggal1.getText() +" s/d "+ Tanggal2.getText() +" Berhasil Disimpan !");
+                                TeksArea.append("Notifikasi : Data Penilian Medis IGD Tanggal: " + Tanggal1.getText() +" s/d "+ Tanggal2.getText() +" Berhasil Disimpan ! \n");
+                           } catch(Exception e){
+                               System.out.println("Notifikasi : "+e);
+                           }
                         }
                     }
                 }
-            } catch (Exception ex) {
-                System.out.println("Notif : "+ex);
-            } finally{
-                if(rs!=null){
-                    rs.close();
+                catch(Exception e){
+                    System.out.println("Notifikasi : "+e);
                 }
-                if(ps!=null){
-                    ps.close();
-                }
+
+               
             }
-        }catch(Exception ez){
-            System.out.println("Notifikasi : "+ez);
-        }
+            catch(Exception e){
+                System.out.println("Notifikasi : "+e);
+            }
     }
-    
+        
         private void saveBatchVaksin() {
             
             try {
