@@ -613,7 +613,7 @@ public class DlgDaftarPermintaanResep extends javax.swing.JDialog {
         panelisi2.add(jLabel20);
 
         DTPCari1.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "18-05-2024" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "22-05-2024" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -627,7 +627,7 @@ public class DlgDaftarPermintaanResep extends javax.swing.JDialog {
         panelisi2.add(jLabel21);
 
         DTPCari2.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "18-05-2024" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "22-05-2024" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -1394,7 +1394,7 @@ public class DlgDaftarPermintaanResep extends javax.swing.JDialog {
         FormMenu.add(BtnObat23HariBPJS);
 
         CetakResepObat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/item.png"))); // NOI18N
-        CetakResepObat.setText("Cetak Telaah & Resep");
+        CetakResepObat.setText("Cetak Resep");
         CetakResepObat.setFocusPainted(false);
         CetakResepObat.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         CetakResepObat.setGlassColor(new java.awt.Color(255, 255, 255));
@@ -3194,6 +3194,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                     TCari.requestFocus();
                 }else if(NoResep.equals("")){
                     JOptionPane.showMessageDialog(null,"Maaf, Silahkan pilih data pasien yang mau dicetak resep..!!");
+                }else if("No".equals(cekTelaah(NoResep))){
+                    JOptionPane.showMessageDialog(rootPane,"Resep belum ditelaah, silahkan lakukan telaah resep terlebih dahulu ..!!");
                 }else if("No".equals(cekValidasi(NoResep))){
                     JOptionPane.showMessageDialog(null,"Maaf, Silahkan lakukan validasi resep terlebih dahulu..!!");
                 }else{
