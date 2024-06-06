@@ -2357,6 +2357,8 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             }
             
             String status = Sequel.cariIsi("select status from resep_obat where no_resep=?",NoResep.getText());
+            String status_lanjut = Sequel.cariIsi("SELECT status_lanjut FROM reg_periksa rp WHERE rp.no_rawat = ?",TNoRw.getText());
+            String sumber = "";
             
             Map<String, Object> param = new HashMap<>();  
             param.put("namars",akses.getnamars());
@@ -2373,6 +2375,28 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             param.put("norm",TNoRm.getText());
             param.put("peresep",NmDokter.getText());
             param.put("noresep",NoResep.getText());
+            
+            String kelas = Sequel.cariIsi("SELECT km.kelas FROM kamar_inap ki JOIN kamar km ON km.kd_kamar = ki.kd_kamar where ki.no_rawat = ? AND ki.stts_pulang != 'Pindah Kamar' LIMIT 1", TNoRw.getText());
+                    
+            if(status_lanjut.equals("Ralan")){
+                sumber =Sequel.cariIsi("SELECT p.nm_poli FROM reg_periksa rp INNER JOIN poliklinik p ON p.kd_poli = rp.kd_poli WHERE rp.no_rawat = ?", TNoRw.getText());
+            }else{
+                sumber =Sequel.cariIsi("SELECT b.nm_bangsal FROM kamar_inap ki " +
+                                                "INNER JOIN kamar k ON k.kd_kamar = ki.kd_kamar " +
+                                                "INNER JOIN bangsal b ON b.kd_bangsal = k.kd_bangsal " +
+                                                "WHERE ki.no_rawat = ?", TNoRw.getText())
+                                       .replaceAll("Lt1 |Lt2 |Lt3 ", "") + " (" + kelas + ")";
+            }
+            
+            param.put("tgllahir",Sequel.cariIsi("SELECT tgl_lahir FROM pasien p WHERE p.no_rkm_medis = ?", TNoRm.getText()));
+            param.put("umur",Sequel.cariIsi("SELECT umurdaftar FROM reg_periksa rp WHERE rp.no_rawat = ?", TNoRw.getText()));
+            param.put("sumber",sumber);
+            param.put("nokartu",Sequel.cariIsi("SELECT bs.no_kartu FROM bridging_sep bs WHERE bs.no_rawat = ?", TNoRw.getText()));
+            param.put("no_sep",Sequel.cariIsi("SELECT bs.no_sep FROM bridging_sep bs WHERE bs.no_rawat = ?", TNoRw.getText()));
+            param.put("DxSEP",Sequel.cariIsi("SELECT CONCAT(bs.diagawal, '-', bs.nmdiagnosaawal) AS diagnosa FROM bridging_sep bs WHERE bs.no_rawat = ?", TNoRw.getText()));
+            param.put("DxRuang",Sequel.cariIsi("SELECT CONCAT(dp.kd_penyakit, '-', p.nm_penyakit) AS diagnosa FROM diagnosa_pasien dp " +
+                        "INNER JOIN penyakit p ON p.kd_penyakit = dp.kd_penyakit " +
+                        "WHERE dp.no_rawat = ? AND dp.prioritas = 1", TNoRw.getText()));
             param.put("alamatip",akses.getalamatip());
             param.put("no_urut", getNoUrut(NoResep.getText(), status, TNoRw.getText()));
             param.put("alamat", Sequel.cariIsi("SELECT CONCAT(ps.alamat, ', DS. ',kl.nm_kel, ', KEC. ',kc.nm_kec, ',',kb.nm_kab) FROM pasien ps " +
@@ -2380,7 +2404,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 "INNER JOIN kecamatan kc ON kc.kd_kec = ps.kd_kec " +
                 "INNER JOIN kabupaten kb ON kb.kd_kab = ps.kd_kab " +
                 "WHERE ps.no_rkm_medis = ?", TNoRm.getText()));
-            param.put("kelas", Sequel.cariIsi("SELECT km.kelas FROM kamar_inap ki JOIN kamar km ON km.kd_kamar = ki.kd_kamar where ki.no_rawat = ? AND ki.stts_pulang != 'Pindah Kamar' LIMIT 1", TNoRw.getText()));
+            param.put("kelas", kelas);
             param.put("jk", Sequel.cariIsi("SELECT jk FROM pasien p WHERE p.no_rkm_medis = ?", TNoRm.getText()));
             finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",KdDokter.getText());
             param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+NmDokter.getText()+"\nID "+(finger.equals("")?KdDokter.getText():finger)+"\n"+DTPBeri.getSelectedItem());  
