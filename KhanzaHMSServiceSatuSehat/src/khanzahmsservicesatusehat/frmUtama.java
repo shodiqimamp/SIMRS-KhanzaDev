@@ -311,30 +311,30 @@ public class frmUtama extends javax.swing.JFrame {
                                String jam_rawat = parts[1];
 
                                String keadaan = rs.getString("keadaan").toLowerCase();
-                               String gcs = rs.getString("gcs");
-                               String tb = rs.getString("tb");
-                               String td = rs.getString("td");
-                               String nadi = rs.getString("nadi");
-                               String rr = rs.getString("rr");
-                               String suhu = rs.getString("suhu");
-                               String spo = rs.getString("spo");
-                               String bb = rs.getString("bb");
-                               String ket_fisik = rs.getString("ket_fisik");
-                               String ket_lokalis = rs.getString("ket_lokalis");
-                               String alergi = rs.getString("alergi");
-                               String kesadaran = rs.getString("kesadaran");
+                               String gcs = rs.getString("gcs").equals("") ? "-" : rs.getString("gcs");
+                               String tb = rs.getString("tb").equals("") ? "-" : rs.getString("tb");
+                               String td = rs.getString("td").equals("") ? "-" : rs.getString("td");
+                               String nadi = rs.getString("nadi").equals("") ? "-" : rs.getString("nadi");
+                               String rr = rs.getString("rr").equals("") ? "-" : rs.getString("rr");
+                               String suhu = rs.getString("suhu").equals("") ? "-" : rs.getString("suhu");
+                               String spo = rs.getString("spo").equals("") ? "-" : rs.getString("spo");
+                               String bb = rs.getString("bb").equals("") ? "-" : rs.getString("bb");
+                               String ket_fisik = rs.getString("ket_fisik").equals("") ? "-" : rs.getString("ket_fisik");
+                               String ket_lokalis = rs.getString("ket_lokalis").equals("") ? "-" : rs.getString("ket_lokalis");
+                               String alergi = rs.getString("alergi").equals("") ? "-" : rs.getString("alergi");
+                               String kesadaran = rs.getString("kesadaran").equals("") ? "-" : rs.getString("kesadaran");
                                String kd_dokter = rs.getString("kd_dokter");
 
-                               String keluhan="Pasien mengatakan " + rps;
-                               String pemeriksaan= ket_fisik +", "+ ket_lokalis+", TENSI : "+ td +", SUHU : "+  suhu+", NADI : "+  nadi +", GCS : "+  gcs +", TB : "+  tb +
+                               String keluhan="IGD : " + rps;
+                               String pemeriksaan="IGD : " + "Ket Fisik : " + ket_fisik +", Ket Lokalis : "+ ket_lokalis+", TENSI : "+ td +", SUHU : "+  suhu+", NADI : "+  nadi +", GCS : "+  gcs +", TB : "+  tb +
                                                    ", BB : "+  bb +", spo : "+  spo +", RESPIRASI : "+  rr;
 //                               System.out.println(no_rawat + ", " +kd_dokter + ", " + tgl_rawat+ ", " + jam_rawat+ ", " + keluhan+ ", " + pemeriksaan);
                                Sequel.menyimpantf("pemeriksaan_ralan","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?","Data",21,new String[]{
-                                   no_rawat, tgl_rawat, jam_rawat, suhu, td, nadi, rr, tb, bb, spo, gcs, kesadaran, rps, pemeriksaan, alergi, "-", "-", "-", "-", "-", kd_dokter
+                                   no_rawat, tgl_rawat, jam_rawat, suhu, td, nadi, rr, tb, bb, spo, gcs, kesadaran, keluhan, pemeriksaan, alergi, "-", "-", "-", "-", "-", kd_dokter
                                });
                                
-                                System.out.println("Notifikasi : Data Penilian Medis IGD Tanggal: " + Tanggal1.getText() +" s/d "+ Tanggal2.getText() +" Berhasil Disimpan !");
-                                TeksArea.append("Notifikasi : Data Penilian Medis IGD Tanggal: " + Tanggal1.getText() +" s/d "+ Tanggal2.getText() +" Berhasil Disimpan ! \n");
+                                System.out.println("Notifikasi : Data Penilian Medis IGD: " + no_rawat +" Tanggal: " + Tanggal1.getText() +" s/d "+ Tanggal2.getText() +" Berhasil Disimpan !");
+                                TeksArea.append("Notifikasi : Data Penilian Medis IGD: " + no_rawat +" Tanggal: " + Tanggal1.getText() +" s/d "+ Tanggal2.getText() +" Berhasil Disimpan ! \n");
                            } catch(Exception e){
                                System.out.println("Notifikasi : "+e);
                            }
